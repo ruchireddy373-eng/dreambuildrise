@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Build Rise</title>
+<style>
+*{box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;margin:0;background:linear-gradient(135deg,#3b82f6,#9333ea);height:100vh;display:flex;justify-content:center;align-items:center;}
+.front-page,.container{text-align:center;color:white;}
+.front-page h1{font-size:45px;margin-bottom:10px;}
+.front-page p{font-size:18px;margin-bottom:30px;}
+.start-btn{background:white;color:#3b82f6;padding:15px 30px;font-size:18px;border:none;border-radius:30px;cursor:pointer;transition:0.3s;font-weight:bold;}
+.start-btn:hover{background:#2563eb;color:white;transform:scale(1.1);}
+.container{background:#fff;padding:30px;border-radius:25px;box-shadow:0 5px 25px rgba(0,0,0,0.2);width:400px;text-align:center;color:#1e40af;}
+h1{margin-bottom:10px;}
+.level-btn,.btn{display:block;width:100%;background:#3b82f6;color:white;border:none;border-radius:15px;padding:12px;margin:10px 0;cursor:pointer;transition:0.3s;}
+.btn{background:#1e40af;width:auto;margin:auto;}
+.level-btn:hover,.btn:hover{background:#2563eb;}
+.question{font-size:18px;margin-bottom:15px;color:#1e40af;}
+.option{display:block;background:#f3f3f3;border:none;margin:8px 0;padding:10px;width:100%;border-radius:10px;cursor:pointer;transition:0.3s;}
+.option:hover{background:#d1fae5;}
+#result{font-weight:bold;margin-top:10px;color:#16a34a;}
+input{padding:10px;width:80%;border-radius:10px;border:1px solid #ccc;margin:10px 0;text-align:center;font-size:16px;}
+</style>
+</head>
+<body>
+
+<!-- FRONT PAGE -->
+<div class="front-page" id="frontPage">
+<h1>🌟 Dream Build Rise</h1>
+<p>Learn English smartly! Improve vocabulary, grammar, sentences & interview skills.</p>
+<button class="start-btn" onclick="showProfile()">Start Learning 🚀</button>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="container" id="profilePage" style="display:none;">
+<h1>👋 Welcome!</h1>
+<p>Enter your name to start:</p>
+<input type="text" id="userName" placeholder="Enter your name">
+<button class="btn" onclick="saveProfile()">Continue ➡️</button>
+</div>
+
+<!-- MAIN APP -->
+<div class="container" id="app" style="display:none;">
+<h1>🌟 Dream Build Rise</h1>
+<p id="welcomeText"></p>
+<button class="level-btn" onclick="selectLevel('vocabulary')">🧠 Vocabulary</button>
+<button class="level-btn" onclick="selectLevel('grammar')">✏️ Grammar</button>
+<button class="level-btn" onclick="selectLevel('sentences')">🗣️ Sentences</button>
+<button class="level-btn" onclick="startInterview()">💼 AI Interview Practice</button>
+<button class="level-btn" onclick="startWeeklyTest()">📅 Weekly Test</button>
+</div>
+
+<script>
+let userName="", currentLevel="", currentDifficulty="", score=0, questionPool=[];
+
+// VOICE
+function speak(text){
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.lang="en-US"; utter.rate=1; utter.pitch=1;
+  speechSynthesis.speak(utter);
+}
+
+// PROFILE
+function showProfile(){ 
+  document.getElementById("frontPage").style.display="none"; 
+  document.getElementById("profilePage").style.display="block"; 
+  speak("Welcome! Please enter your name."); 
+}
+function saveProfile(){ 
+  const name=document.getElementById("userName").value.trim(); 
+  if(!name){ alert("Please enter your name!"); return; } 
+  userName=name;
+  document.getElementById("profilePage").style.display="none"; 
+  document.getElementById("app").style.display="block"; 
+  document.getElementById("welcomeText").innerText=`Hello, ${userName}! Choose your category below 👇`; 
+  speak(`Hello ${userName}! Welcome to Dream Build Rise.`);
+}
+
+// QUESTIONS DATA
+const levels = {
+  vocabulary:{
+    basic:[
+      {question:"Synonym of 'big'?", options:["Small","Tiny","Large","Thin"], correct:"Large"},
+      {question:"Meaning of 'happy'?", options:["Sad","Joyful","Angry","Tired"], correct:"Joyful"},
+      {question:"Synonym of 'fast'?", options:["Slow","Quick","Lazy","Weak"], correct:"Quick"},
+      {question:"Meaning of 'angry'?", options:["Furious","Calm","Joyful","Tired"], correct:"Furious"},
+      {question:"Antonym of 'hot'?", options:["Cold","Warm","Boiling","Dry"], correct:"Cold"}
+    ],
+    medium:[
+      {question:"Synonym of 'robust'?", options:["Weak","Strong","Fragile","Complex"], correct:"Strong"},
+      {question:"Meaning of 'compile'?", options:["Interpret","Assemble","Delete","Execute"], correct:"Assemble"},
+      {question:"Synonym of 'ancient'?", options:["Modern","Old","New","Young"], correct:"Old"},
+      {question:"Antonym of 'easy'?", options:["Hard","Soft","Simple","Light"], correct:"Hard"},
+      {question:"Synonym of 'begin'?", options:["Stop","Finish","Start","End"], correct:"Start"}
+    ],
+    hard:[
+      {question:"Synonym of 'facilitate'?", options:["Hinder","Enable","Prevent","Stop"], correct:"Enable"},
+      {question:"Meaning of 'optimize'?", options:["Worsen","Improve efficiency","Delete","Ignore"], correct:"Improve efficiency"},
+      {question:"Synonym of 'elaborate'?", options:["Simple","Explain","Brief","Hide"], correct:"Explain"},
+      {question:"Antonym of 'scarce'?", options:["Plentiful","Rare","Limited","Sparse"], correct:"Plentiful"},
+      {question:"Meaning of 'resilient'?", options:["Weak","Flexible","Rigid","Lazy"], correct:"Flexible"}
+    ]
+  },
+  grammar:{
+    basic:[
+      {question:"He _____ to school every day.", options:["go","going","goes","gone"], correct:"goes"},
+      {question:"I _____ a student.", options:["am","is","are","was"], correct:"am"},
+      {question:"She _____ happy.", options:["is","are","am","be"], correct:"is"},
+      {question:"They _____ at home.", options:["is","are","am","be"], correct:"are"},
+      {question:"I _____ reading a book.", options:["am","is","are","be"], correct:"am"}
+    ],
+    medium:[
+      {question:"She has been here _____ five years.", options:["since","for","from","at"], correct:"for"},
+      {question:"If I _____ enough money, I would buy a laptop.", options:["have","had","has","having"], correct:"had"},
+      {question:"He _____ finished his homework before dinner.", options:["has","have","had","having"], correct:"has"},
+      {question:"We _____ playing football now.", options:["is","are","am","be"], correct:"are"},
+      {question:"The teacher _____ not like late submissions.", options:["do","does","did","doing"], correct:"does"}
+    ],
+    hard:[
+      {question:"He _____ not like coffee.", options:["do","does","did","doing"], correct:"does"},
+      {question:"The sun _____ in the east.", options:["rise","rises","rose","raising"], correct:"rises"},
+      {question:"If it _____, we will stay home.", options:["rains","rain","rained","is raining"], correct:"rains"},
+      {question:"She _____ already finished her work.", options:["have","has","had","having"], correct:"has"},
+      {question:"I wish I _____ more time.", options:["have","had","has","having"], correct:"had"}
+    ]
+  },
+  sentences:{
+    basic:[
+      {question:"I have a pen.", options:["I has a pen.","I have a pen.","I having pen.","I am have pen."], correct:"I have a pen."},
+      {question:"She is happy.", options:["She are happy.","She is happy.","She be happy.","She am happy."], correct:"She is happy."},
+      {question:"They play football.", options:["They plays football.","They play football.","They playing football.","They is play football."], correct:"They play football."},
+      {question:"We are students.", options:["We is students.","We are students.","We am students.","We be students."], correct:"We are students."},
+      {question:"It is raining now.", options:["It raining now.","It is raining now.","It are raining now.","It be raining now."], correct:"It is raining now."}
+    ],
+    medium:[
+      {question:"He can sing well.", options:["He can sings well.","He can sing well.","He can singing well.","He can sang well."], correct:"He can sing well"},
+      {question:"I have finished my work.", options:["I has finished","I have finished","I having finished","I am finished"], correct:"I have finished"},
+      {question:"We were late yesterday.", options:["We was late","We were late","We is late","We am late"], correct:"We were late"},
+      {question:"She has been working here for years.", options:["She have been","She has been","She had been","She having been"], correct:"She has been"},
+      {question:"If I were rich, I would travel.", options:["If I was rich","If I were rich","If I am rich","If I be rich"], correct:"If I were rich"}
+    ],
+    hard:[
+      {question:"They have already finished.", options:["They has finished","They have finished","They had finished","They having finished"], correct:"They have finished"},
+      {question:"He can solve problems easily.", options:["He can solves","He can solve","He can solving","He can solved"], correct:"He can solve"},
+      {question:"I wish I had studied more.", options:["I wish I has studied","I wish I had studied","I wish I have studied","I wish I having studied"], correct:"I wish I had studied"},
+      {question:"She would have come if invited.", options:["She would has come","She would have come","She would have came","She would having come"], correct:"She would have come"},
+      {question:"Had I known, I would have acted.", options:["Had I knew","Had I known","Had I know","Had I knowing"], correct:"Had I known"}
+    ]
+  }
+};
+
+// LEVEL SELECTION
+function selectLevel(level){
+  currentLevel=level;
+  document.getElementById("app").innerHTML=`
+    <h1>${level.charAt(0).toUpperCase()+level.slice(1)}</h1>
+    <p>Select difficulty level:</p>
+    <button class="level-btn" onclick="startLevel('basic')">Basic</button>
+    <button class="level-btn" onclick="startLevel('medium')">Medium</button>
+    <button class="level-btn" onclick="startLevel('hard')">Hard</button>
+    <button class="btn" onclick="restart()">🏠 Back to Home</button>
+  `;
+}
+
+// START LEVEL
+function startLevel(difficulty){
+  currentDifficulty=difficulty;
+  score=0;
+  questionPool=[...levels[currentLevel][difficulty]];
+  loadQuestion();
+  speak(`${userName}, welcome to ${currentLevel} ${difficulty} level.`);
+}
+
+// LOAD QUESTION
+function loadQuestion(){
+  if(questionPool.length===0){ showResult(); return; }
+  const rand=Math.floor(Math.random()*questionPool.length);
+  const data=questionPool[rand]; questionPool.splice(rand,1);
+  document.getElementById("app").innerHTML=`
+    <h1>${currentLevel.charAt(0).toUpperCase()+currentLevel.slice(1)} - ${currentDifficulty.charAt(0).toUpperCase()+currentDifficulty.slice(1)}</h1>
+    <p class="question">${data.question}</p>
+    ${data.options.map(opt=>`<button class='option' onclick="checkAnswer('${opt}')">${opt}</button>`).join('')}
+    <p id="result"></p>`;
+  speak(data.question);
+}
+
+// CHECK ANSWER
+function checkAnswer(selected){
+  const correctAnswer=levels[currentLevel][currentDifficulty].find(q=>q.question===document.querySelector('.question').innerText).correct;
+  const result=document.getElementById("result");
+  if(selected===correctAnswer){ result.innerHTML="✅ Correct!"; speak("Correct!"); score++; setTimeout(loadQuestion,1500); }
+  else{ result.innerHTML=`❌ Wrong! Correct answer: ${correctAnswer}<br>Session ended.`; speak(`Oops! Correct answer is ${correctAnswer}. Session ended.`); document.querySelectorAll('.option').forEach(btn=>btn.disabled=true); setTimeout(restart,3000); }
+}
+
+// SHOW RESULT
+function showResult(){ document.getElementById("app").innerHTML=`<h1>🎯 Level Complete!</h1><p>${userName}, your Score: ${score}</p><button class="btn" onclick="restart()">🏠 Back to Home</button>`; speak(`${userName}, level complete. Your score is ${score}`); }
+
+// RESTART
+function restart(){
+  document.getElementById("app").innerHTML=`
+    <h1>🌟 Dream Build Rise</h1>
+    <p id="welcomeText">Hello, ${userName}! Choose your category below 👇</p>
+    <button class="level-btn" onclick="selectLevel('vocabulary')">🧠 Vocabulary</button>
+    <button class="level-btn" onclick="selectLevel('grammar')">✏️ Grammar</button>
+    <button class="level-btn" onclick="selectLevel('sentences')">🗣️ Sentences</button>
+    <button class="level-btn" onclick="startInterview()">💼 AI Interview Practice</button>
+    <button class="level-btn" onclick="startWeeklyTest()">📅 Weekly Test</button>
+  `;
+  speak(`Welcome back, ${userName}! Choose your category to continue.`);
+}
+
+// AI INTERVIEW
+const interviewQuestions = [
+  "Tell me about yourself.",
+  "Why do you want this job?",
+  "What are your strengths?",
+  "What are your weaknesses?",
+  "Where do you see yourself in 5 years?"
+];
+let interviewIndex = 0;
+function startInterview(){
+  interviewIndex = 0;
+  document.getElementById("app").innerHTML = `<h1>💼 AI Interview</h1><p id="interviewQ">Get ready...</p><button class="btn" onclick="restart()">🏠 Back to Home</button>`;
+  speak("Welcome to AI interview practice. Answer the following questions orally.");
+  setTimeout(nextInterviewQuestion,1000);
+}
+function nextInterviewQuestion(){
+  if(interviewIndex >= interviewQuestions.length){
+    document.getElementById("interviewQ").innerText = `🎯 Interview Complete! Well done, ${userName}!`;
+    speak(`Interview complete! Well done, ${userName}!`);
+    return;
+  }
+  const question = interviewQuestions[interviewIndex];
+  document.getElementById("interviewQ").innerText = question + "\n(Start speaking now)";
+  speak(question);
+  if(!('webkitSpeechRecognition' in window)){ alert("Speech Recognition not supported in this browser."); return; }
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-US"; recognition.interimResults=false; recognition.maxAlternatives=1;
+  recognition.start();
+  recognition.onresult=function(event){
+    const userAnswer=event.results[0][0].transcript;
+    document.getElementById("interviewQ").innerText += `\nYour answer: ${userAnswer}`;
+    speak("Got it! Let's move to the next question.");
+    interviewIndex++;
+    setTimeout(nextInterviewQuestion,4000);
+  }
+  recognition.onerror=function(event){
+    document.getElementById("interviewQ").innerText += "\nSorry, I could not understand. Moving to next question.";
+    interviewIndex++;
+    setTimeout(nextInterviewQuestion,3000);
+  }
+}
+
+// WEEKLY TEST
+function startWeeklyTest(){
+  let allQuestions = [];
+  for(const cat in levels){ for(const diff in levels[cat]){ allQuestions = allQuestions.concat(levels[cat][diff]); } }
+  questionPool = allQuestions.sort(()=>0.5-Math.random()).slice(0,10);
+  score=0;
+  document.getElementById("app").innerHTML=`<h1>📅 Weekly Test</h1>`;
+  speak(`${userName}, welcome to your weekly test. Let's begin!`);
+  loadWeeklyQuestion();
+}
+function loadWeeklyQuestion(){
+  if(questionPool.length===0){ showWeeklyResult(); return; }
+  const data = questionPool.shift();
+  document.getElementById("app").innerHTML=`
+    <h1>📅 Weekly Test</h1>
+    <p class="question">${data.question}</p>
+    ${data.options.map(opt=>`<button class='option' onclick="checkWeeklyAnswer('${opt}','${data.correct}')">${opt}</button>`).join('')}
+    <p id="result"></p>`;
+  speak(data.question);
+}
+function checkWeeklyAnswer(selected, correct){
+  const result=document.getElementById("result");
+  if(selected===correct){ result.innerHTML="✅ Correct!"; speak("Correct!"); score++; setTimeout(loadWeeklyQuestion,1500); }
+  else{ result.innerHTML=`❌ Wrong! Correct answer: ${correct}`; speak(`Oops! Correct answer is ${correct}`); setTimeout(loadWeeklyQuestion,2000); }
+}
+function showWeeklyResult(){
+  document.getElementById("app").innerHTML=`
+    <h1>🎯 Weekly Test Complete</h1>
+    <p>${userName}, your Score: ${score}/10</p>
+    <button class="btn" onclick="restart()">🏠 Back to Home</button>`;
+  speak(`${userName}, weekly test complete. Your score is ${score} out of 10`);
+}
+</script>
+</body>
+</html>
+
