@@ -1,291 +1,3368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Build Rise</title>
-<style>
-*{box-sizing:border-box;}
-body{font-family:'Poppins',sans-serif;margin:0;background:linear-gradient(135deg,#3b82f6,#9333ea);height:100vh;display:flex;justify-content:center;align-items:center;}
-.front-page,.container{text-align:center;color:white;}
-.front-page h1{font-size:45px;margin-bottom:10px;}
-.front-page p{font-size:18px;margin-bottom:30px;}
-.start-btn{background:white;color:#3b82f6;padding:15px 30px;font-size:18px;border:none;border-radius:30px;cursor:pointer;transition:0.3s;font-weight:bold;}
-.start-btn:hover{background:#2563eb;color:white;transform:scale(1.1);}
-.container{background:#fff;padding:30px;border-radius:25px;box-shadow:0 5px 25px rgba(0,0,0,0.2);width:400px;text-align:center;color:#1e40af;}
-h1{margin-bottom:10px;}
-.level-btn,.btn{display:block;width:100%;background:#3b82f6;color:white;border:none;border-radius:15px;padding:12px;margin:10px 0;cursor:pointer;transition:0.3s;}
-.btn{background:#1e40af;width:auto;margin:auto;}
-.level-btn:hover,.btn:hover{background:#2563eb;}
-.question{font-size:18px;margin-bottom:15px;color:#1e40af;}
-.option{display:block;background:#f3f3f3;border:none;margin:8px 0;padding:10px;width:100%;border-radius:10px;cursor:pointer;transition:0.3s;}
-.option:hover{background:#d1fae5;}
-#result{font-weight:bold;margin-top:10px;color:#16a34a;}
-input{padding:10px;width:80%;border-radius:10px;border:1px solid #ccc;margin:10px 0;text-align:center;font-size:16px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamBuildRise - Voice-Based English for Fresher Job Interviews</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #059669;
+            --accent: #dc2626;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --tech-color: #3b82f6;
+            --non-tech-color: #8b5cf6;
+            --voice-color: #f59e0b;
+            --fresher-color: #ec4899;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--fresher-color);
+        }
+        
+        .tagline {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .xp-display {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .level-display {
+            background-color: var(--fresher-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background-color: white;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(37, 99, 235, 0.3);
+        }
+        
+        /* Page Content */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--fresher-color));
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 8s infinite linear;
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Name Entry Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .name-modal {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .name-modal h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .name-modal p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Timer */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(37, 99, 235, 0.1);
+            border-radius: 10px;
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timer-warning {
+            color: var(--accent);
+            animation: pulse-text 1s infinite;
+        }
+        
+        @keyframes pulse-text {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Levels Section */
+        .levels-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .levels-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .levels-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .level-card {
+            width: 120px;
+            height: 120px;
+            background-color: var(--light);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .level-card.active {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+        
+        .level-card.completed {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .level-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .level-name {
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        /* Question Bank */
+        .question-bank {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .question-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .question-counter {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .question-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Voice Section */
+        .voice-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .voice-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .voice-btn {
+            background-color: var(--voice-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .voice-btn:hover {
+            background-color: #e58e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        .voice-btn.recording {
+            background-color: var(--accent);
+            animation: pulse-record 1.5s infinite;
+        }
+        
+        @keyframes pulse-record {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+        
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(220, 38, 38, 0.1);
+            border-radius: 10px;
+            color: var(--accent);
+        }
+        
+        .recording-indicator.active {
+            display: flex;
+        }
+        
+        .recording-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        
+        .recording-dot:nth-child(1) { animation-delay: -0.32s; }
+        .recording-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        .voice-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: var(--light);
+            display: none;
+        }
+        
+        .voice-feedback.active {
+            display: block;
+        }
+        
+        .feedback-good {
+            background-color: rgba(5, 150, 105, 0.2);
+            color: var(--secondary);
+        }
+        
+        .feedback-improve {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--voice-color);
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .main-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .interview-path {
+            margin-bottom: 30px;
+        }
+        
+        .path-visualization {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .path-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+            border: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .path-step.active {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .path-step.completed {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        .path-connector {
+            height: 3px;
+            flex-grow: 1;
+            background-color: var(--primary);
+            margin: 0 -2px;
+        }
+        
+        .path-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .path-label {
+            font-size: 0.8rem;
+            text-align: center;
+            max-width: 80px;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .module-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .module-card.tech {
+            border-left: 4px solid var(--tech-color);
+        }
+        
+        .module-card.non-tech {
+            border-left: 4px solid var(--non-tech-color);
+        }
+        
+        .module-card.completed {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .module-card.current {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+        
+        .module-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .module-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .tech-tag {
+            background-color: var(--tech-color);
+        }
+        
+        .non-tech-tag {
+            background-color: var(--non-tech-color);
+        }
+        
+        .module-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #b91c1c;
+        }
+        
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        .btn-voice {
+            background-color: var(--voice-color);
+        }
+        
+        .btn-voice:hover {
+            background-color: #e58e0b;
+        }
+        
+        .daily-goal {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .goal-progress {
+            flex-grow: 1;
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .goal-progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 60%;
+            transition: width 0.5s ease;
+        }
+        
+        .practice-interview {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--fresher-color));
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .practice-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .practice-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .interview-tips {
+            margin-top: 20px;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: var(--light);
+        }
+        
+        .tip-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .tip-content h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .tip-content p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .lesson-exercise {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-type {
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .type-tech {
+            background-color: var(--tech-color);
+        }
+        
+        .type-non-tech {
+            background-color: var(--non-tech-color);
+        }
+        
+        .exercise-question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .exercise-scenario {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .vocabulary-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .vocab-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .vocab-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .vocab-term {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .vocab-def {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .assessment-container {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .assessment-question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .assessment-options {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .assessment-option {
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .assessment-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .assessment-option.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .assessment-result {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .result-good {
+            background-color: rgba(5, 150, 105, 0.2);
+            color: var(--secondary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* New styles for enhanced features */
+        .progress-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        
+        .progress-ring-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--light-gray);
+            stroke-width: 8;
+        }
+        
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--secondary);
+            stroke-width: 8;
+            stroke-dasharray: 0 100;
+            transition: stroke-dasharray 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .loading-indicator {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(37, 99, 235, 0.1);
+            border-radius: 10px;
+        }
+        
+        .loading-indicator.active {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(37, 99, 235, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .achievement-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: var(--light);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin: 5px;
+        }
+        
+        .achievement-icon {
+            color: var(--voice-color);
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .ai-voice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .ai-voice-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .ai-voice-btn:hover {
+            background-color: #047857;
+            transform: translateY(-2px);
+        }
+        
+        .ai-voice-btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .ai-speaking-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 8px 15px;
+            background-color: rgba(5, 150, 105, 0.2);
+            border-radius: 20px;
+            color: var(--secondary);
+        }
+        
+        .ai-speaking-indicator.active {
+            display: flex;
+        }
+        
+        .ai-speaking-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .ai-speaking-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        
+        .ai-speaking-dot:nth-child(1) { animation-delay: -0.32s; }
+        .ai-speaking-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        .sample-answer {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid var(--secondary);
+            display: none;
+        }
+        
+        .sample-answer.active {
+            display: block;
+        }
+        
+        .sample-answer h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .voice-test-panel {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .voice-test-panel h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Scoreboard Styles */
+        .scoreboard {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .scoreboard h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .score-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .score-category {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .score-category h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-bar {
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background-color: var(--secondary);
+            transition: width 0.5s ease;
+        }
+        
+        .analysis-details {
+            margin-top: 20px;
+        }
+        
+        .analysis-criteria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .criterion {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .criterion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .criterion-name {
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .criterion-score {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .criterion-feedback {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .fresher-tag {
+            background-color: var(--fresher-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Voice Activity Detection Styles */
+        .recording-status {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .recording-status.active {
+            display: flex;
+        }
+        
+        .recording-status.voice-detected {
+            background-color: rgba(5, 150, 105, 0.2);
+            color: var(--secondary);
+        }
+        
+        .recording-status.silence-detected {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--voice-color);
+        }
+        
+        .recording-status.ending {
+            background-color: rgba(220, 38, 38, 0.2);
+            color: var(--accent);
+        }
+        
+        .voice-activity-indicator {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .voice-bar {
+            width: 4px;
+            height: 20px;
+            background-color: var(--light-gray);
+            border-radius: 2px;
+            transition: all 0.1s ease;
+        }
+        
+        .voice-bar.active {
+            background-color: var(--secondary);
+        }
+        
+        .retry-prompt {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            color: var(--voice-color);
+            text-align: center;
+        }
+        
+        .retry-prompt.active {
+            display: flex;
+        }
+        
+        .auto-stop-info {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        body.dark-mode {
+            --light: #1e293b;
+            --dark: #f8fafc;
+            --gray: #cbd5e1;
+            --light-gray: #334155;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .modules-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .vocabulary-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .voice-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .levels-container {
+                gap: 10px;
+            }
+            
+            .level-card {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .score-categories {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .analysis-criteria {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Name Entry Modal -->
+    <div class="modal-overlay active" id="name-modal-overlay">
+        <div class="name-modal">
+            <h2>Welcome to DreamBuildRise!</h2>
+            <p>Please enter your name to get started with personalized interview practice for freshers.</p>
+            <input type="text" class="name-input" id="user-name-input" placeholder="Enter your name">
+            <div class="ai-voice-controls">
+                <button class="ai-voice-btn" id="name-modal-speak-btn">
+                    <i class="fas fa-volume-up"></i> Hear Instructions
+                </button>
+            </div>
+            <div class="ai-speaking-indicator" id="name-modal-speaking-indicator">
+                <div class="ai-speaking-dots">
+                    <div class="ai-speaking-dot"></div>
+                    <div class="ai-speaking-dot"></div>
+                    <div class="ai-speaking-dot"></div>
+                </div>
+                <span>AI Speaking...</span>
+            </div>
+            <button class="btn btn-large" id="save-name-btn">Start Learning</button>
+        </div>
+    </div>
 
-<!-- FRONT PAGE -->
-<div class="front-page" id="frontPage">
-<h1>🌟 Dream Build Rise</h1>
-<p>Learn English smartly! Improve vocabulary, grammar, sentences & interview skills.</p>
-<button class="start-btn" onclick="showProfile()">Start Learning 🚀</button>
-</div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div>
+                    <h1>Dream<span>Build</span>Rise</h1>
+                    <div class="tagline">Voice-Based English for Fresher Job Interviews</div>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="xp-display">
+                    <i class="fas fa-star"></i> <span id="user-xp">0</span> XP
+                </div>
+                <div class="level-display">
+                    <i class="fas fa-level-up-alt"></i> Level <span id="user-level">1</span>
+                </div>
+                <div class="avatar" id="user-avatar">?</div>
+            </div>
+        </header>
+        
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <a href="#" class="nav-btn active" data-page="home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#" class="nav-btn" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="#" class="nav-btn" data-page="technical">
+                <i class="fas fa-code"></i> Technical Interviews
+            </a>
+            <a href="#" class="nav-btn" data-page="non-technical">
+                <i class="fas fa-users"></i> HR Interviews
+            </a>
+            <a href="#" class="nav-btn" data-page="vocabulary">
+                <i class="fas fa-book"></i> Interview Vocabulary
+            </a>
+            <a href="#" class="nav-btn" data-page="scoreboard">
+                <i class="fas fa-chart-bar"></i> Scoreboard
+            </a>
+        </nav>
+        
+        <!-- Home Page -->
+        <div class="page-content active" id="home-page">
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>Master Interview English for Freshers</h2>
+                    <p>Build confidence for your first job interview with our voice-based learning platform. Practice speaking, get instant feedback, and rise to your career dreams.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-large btn-voice start-interview-btn">
+                            <i class="fas fa-microphone"></i> Start Voice Practice
+                        </button>
+                        <button class="btn btn-large take-assessment-btn">
+                            <i class="fas fa-clipboard-check"></i> Take Assessment
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>Voice-Based Practice</h3>
+                    <p>Practice answering interview questions aloud and get instant feedback on your pronunciation and fluency.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Feedback</h3>
+                    <p>Our advanced AI analyzes your responses for content, clarity, and confidence to help you improve.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Fresher-Focused Content</h3>
+                    <p>Access interview questions specifically designed for freshers entering the job market.</p>
+                </div>
+            </section>
+            
+            <section class="levels-section">
+                <h2>Fresher Learning Path</h2>
+                <p>Progress through levels from beginner to interview-ready fresher</p>
+                
+                <div class="levels-container">
+                    <div class="level-card active" data-level="1">
+                        <div class="level-number">1</div>
+                        <div class="level-name">Self Introduction</div>
+                    </div>
+                    <div class="level-card" data-level="2">
+                        <div class="level-number">2</div>
+                        <div class="level-name">Academic Background</div>
+                    </div>
+                    <div class="level-card" data-level="3">
+                        <div class="level-number">3</div>
+                        <div class="level-name">Technical Basics</div>
+                    </div>
+                    <div class="level-card" data-level="4">
+                        <div class="level-number">4</div>
+                        <div class="level-name">HR Questions</div>
+                    </div>
+                    <div class="level-card" data-level="5">
+                        <div class="level-number">5</div>
+                        <div class="level-name">Scenario Responses</div>
+                    </div>
+                    <div class="level-card" data-level="6">
+                        <div class="level-number">6</div>
+                        <div class="level-name">Mock Interviews</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="voice-section">
+                <h2><i class="fas fa-microphone"></i> Try Our Voice Practice</h2>
+                <p>Experience our voice-based learning with a sample question. Click record and answer aloud!</p>
+                
+                <div class="voice-test-panel">
+                    <h4>Test AI Voice First</h4>
+                    <p>Make sure your speakers are working by testing our AI voice</p>
+                    <button class="ai-voice-btn" id="test-ai-voice-btn">
+                        <i class="fas fa-volume-up"></i> Test AI Voice
+                    </button>
+                </div>
+                
+                <div class="lesson-exercise">
+                    <div class="exercise-header">
+                        <h3>Sample Question for Freshers</h3>
+                        <div class="exercise-type type-non-tech">HR <span class="fresher-tag">FRESHER</span></div>
+                    </div>
+                    
+                    <div class="exercise-question">
+                        "As a fresher with no work experience, what qualities do you have that make you suitable for this role?"
+                    </div>
+                    
+                    <div class="exercise-scenario">
+                        This is a common question for freshers. Focus on your academic achievements, projects, internships, and soft skills.
+                    </div>
+                    
+                    <div class="ai-voice-controls">
+                        <button class="ai-voice-btn" id="home-speak-question-btn">
+                            <i class="fas fa-volume-up"></i> Hear Question
+                        </button>
+                        <button class="ai-voice-btn" id="home-speak-instructions-btn">
+                            <i class="fas fa-info-circle"></i> Hear Instructions
+                        </button>
+                        <button class="ai-voice-btn" id="home-speak-sample-btn">
+                            <i class="fas fa-play-circle"></i> Hear Sample Answer
+                        </button>
+                    </div>
+                    
+                    <div class="ai-speaking-indicator" id="home-speaking-indicator">
+                        <div class="ai-speaking-dots">
+                            <div class="ai-speaking-dot"></div>
+                            <div class="ai-speaking-dot"></div>
+                            <div class="ai-speaking-dot"></div>
+                        </div>
+                        <span>AI Speaking...</span>
+                    </div>
+                    
+                    <div class="sample-answer" id="home-sample-answer">
+                        <h4><i class="fas fa-lightbulb"></i> Sample Answer for Freshers</h4>
+                        <p>"Although I'm a fresher, I've developed strong problem-solving skills through my academic projects. For example, in my final year project, I led a team of four to develop a mobile application that helped local businesses track inventory. I'm a quick learner, adaptable, and eager to apply my theoretical knowledge in a practical setting. I also have excellent communication skills, which I honed through college presentations and group projects."</p>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <i class="fas fa-clock"></i>
+                        <div class="timer" id="home-timer">02:00</div>
+                        <span>Time Remaining</span>
+                    </div>
+                    
+                    <!-- Voice Activity Indicator -->
+                    <div class="voice-activity-indicator" id="home-voice-activity">
+                        <div class="voice-bar" id="home-voice-bar-1"></div>
+                        <div class="voice-bar" id="home-voice-bar-2"></div>
+                        <div class="voice-bar" id="home-voice-bar-3"></div>
+                        <div class="voice-bar" id="home-voice-bar-4"></div>
+                        <div class="voice-bar" id="home-voice-bar-5"></div>
+                        <div class="voice-bar" id="home-voice-bar-6"></div>
+                        <div class="voice-bar" id="home-voice-bar-7"></div>
+                        <div class="voice-bar" id="home-voice-bar-8"></div>
+                    </div>
+                    
+                    <!-- Recording Status -->
+                    <div class="recording-status" id="home-recording-status">
+                        <i class="fas fa-microphone"></i>
+                        <span id="home-status-text">Recording in progress...</span>
+                    </div>
+                    
+                    <!-- Retry Prompt -->
+                    <div class="retry-prompt" id="home-retry-prompt">
+                        <i class="fas fa-redo-alt"></i>
+                        <div>
+                            <p><strong>Please try again</strong></p>
+                            <p>Your answer was too short or contained long pauses. Try to speak continuously for at least 30 seconds.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="recording-indicator" id="home-recording-indicator">
+                        <div class="recording-dots">
+                            <div class="recording-dot"></div>
+                            <div class="recording-dot"></div>
+                            <div class="recording-dot"></div>
+                        </div>
+                        <span>Recording... Speak now!</span>
+                    </div>
+                    
+                    <div class="loading-indicator" id="home-loading-indicator">
+                        <div class="loading-spinner"></div>
+                        <span>Analyzing your response...</span>
+                    </div>
+                    
+                    <div class="voice-controls">
+                        <button class="voice-btn" id="home-start-record-btn">
+                            <i class="fas fa-microphone"></i> Start Recording
+                        </button>
+                    </div>
+                    
+                    <div class="auto-stop-info">
+                        <i class="fas fa-info-circle"></i> Recording will automatically stop after 5 seconds of silence
+                    </div>
+                    
+                    <div class="voice-feedback" id="home-voice-feedback">
+                        <h4><i class="fas fa-robot"></i> Feedback Analysis</h4>
+                        <div class="feedback-content">
+                            <p><strong>Pronunciation:</strong> <span id="home-pronunciation-score">-</span></p>
+                            <p><strong>Fluency:</strong> <span id="home-fluency-score">-</span></p>
+                            <p><strong>Content Relevance:</strong> <span id="home-content-score">-</span></p>
+                            <p><strong>Confidence:</strong> <span id="home-confidence-score">-</span></p>
+                            <p><strong>Overall Score:</strong> <span id="home-overall-score">-</span></p>
+                            <p><strong>Suggestions:</strong> <span id="home-suggestions">Record your answer to get personalized feedback</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Dashboard Page -->
+        <div class="page-content" id="dashboard-page">
+            <div class="dashboard">
+                <div class="main-content">
+                    <div class="interview-path">
+                        <h2>Your Fresher Interview Preparation Path</h2>
+                        <div class="path-visualization">
+                            <div class="path-step">1</div>
+                            <div class="path-connector"></div>
+                            <div class="path-step">2</div>
+                            <div class="path-connector"></div>
+                            <div class="path-step">3</div>
+                            <div class="path-connector"></div>
+                            <div class="path-step">4</div>
+                            <div class="path-connector"></div>
+                            <div class="path-step">5</div>
+                        </div>
+                        <div class="path-labels">
+                            <div class="path-label">Self Introduction</div>
+                            <div class="path-label">Academic Background</div>
+                            <div class="path-label">Technical Basics</div>
+                            <div class="path-label">HR Questions</div>
+                            <div class="path-label">Mock Interviews</div>
+                        </div>
+                    </div>
+                    
+                    <h2>Fresher Interview Preparation Modules</h2>
+                    <p class="dashboard-message" style="text-align: center; color: var(--gray); margin: 20px 0;">
+                        Complete practice sessions to unlock modules and track your progress
+                    </p>
+                    <div class="modules-grid">
+                        <div class="module-card non-tech locked">
+                            <div class="module-type non-tech-tag">HR</div>
+                            <div class="module-icon">👋</div>
+                            <h3>Self Introduction</h3>
+                            <p>Locked</p>
+                        </div>
+                        <div class="module-card non-tech locked">
+                            <div class="module-type non-tech-tag">HR</div>
+                            <div class="module-icon">🎓</div>
+                            <h3>Academic Background</h3>
+                            <p>Locked</p>
+                        </div>
+                        <div class="module-card tech locked">
+                            <div class="module-type tech-tag">Tech</div>
+                            <div class="module-icon">🔧</div>
+                            <h3>Technical Basics</h3>
+                            <p>Locked</p>
+                        </div>
+                        <div class="module-card tech locked">
+                            <div class="module-type tech-tag">Tech</div>
+                            <div class="module-icon">💻</div>
+                            <h3>Project Discussions</h3>
+                            <p>Locked</p>
+                        </div>
+                        <div class="module-card non-tech locked">
+                            <div class="module-type non-tech-tag">HR</div>
+                            <div class="module-icon">❓</div>
+                            <h3>Common HR Questions</h3>
+                            <p>Locked</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-interview">
+                        <div class="practice-icon">🎤</div>
+                        <div class="practice-title">Fresher Mock Interview</div>
+                        <p>Test your skills with realistic interview scenarios for freshers</p>
+                        <button class="btn btn-accent btn-large start-mock-interview-btn">
+                            Start Mock Interview
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <div class="card">
+                        <h2>Your Progress</h2>
+                        <div class="progress-ring">
+                            <svg class="progress-ring-circle" width="120" height="120">
+                                <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                                <circle class="progress-ring-fill" cx="60" cy="60" r="52" id="progress-ring"></circle>
+                            </svg>
+                            <div class="progress-text" id="progress-percent">0%</div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Day Streak</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">0%</div>
+                                <div class="stat-label">Mastery</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Modules</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Mock Tests</div>
+                            </div>
+                        </div>
+                        
+                        <div class="daily-goal">
+                            <span>Daily Goal</span>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar" id="goal-progress" style="width: 0%;"></div>
+                            </div>
+                            <span>0/5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Recent Achievements</h2>
+                        <div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                            <div class="achievement-badge">
+                                <i class="fas fa-microphone achievement-icon"></i>
+                                <span>First Recording</span>
+                            </div>
+                            <div class="achievement-badge">
+                                <i class="fas fa-star achievement-icon"></i>
+                                <span>Practice Streak</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Fresher Interview Tips</h2>
+                        <div class="interview-tips">
+                            <div class="tip-item">
+                                <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+                                <div class="tip-content">
+                                    <h4>Focus on Academics & Projects</h4>
+                                    <p>As a fresher, highlight your academic achievements and projects</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon"><i class="fas fa-volume-up"></i></div>
+                                <div class="tip-content">
+                                    <h4>Show Enthusiasm</h4>
+                                    <p>Express genuine interest in the role and company</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon"><i class="fas fa-code"></i></div>
+                                <div class="tip-content">
+                                    <h4>Explain Your Learning</h4>
+                                    <p>Describe how you approach learning new technologies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical Interviews Page -->
+        <div class="page-content" id="technical-page">
+            <div class="main-content">
+                <h2>Technical Interview Questions for Freshers</h2>
+                <p>Practice answering common technical questions in English. Progress through difficulty levels.</p>
+                
+                <div class="levels-container" style="margin-bottom: 20px;">
+                    <div class="level-card active" data-level="1">
+                        <div class="level-number">1</div>
+                        <div class="level-name">Basic Concepts</div>
+                    </div>
+                    <div class="level-card" data-level="2">
+                        <div class="level-number">2</div>
+                        <div class="level-name">Project Discussion</div>
+                    </div>
+                    <div class="level-card" data-level="3">
+                        <div class="level-number">3</div>
+                        <div class="level-name">Problem Solving</div>
+                    </div>
+                </div>
+                
+                <div class="lesson-progress">
+                    <span>Progress: 0/8</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                
+                <div class="question-bank">
+                    <div class="question-nav">
+                        <div class="question-counter">Question 1 of 5</div>
+                        <div class="question-controls">
+                            <button class="btn" id="prev-question-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                            <button class="btn" id="next-question-btn">Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-exercise">
+                        <div class="exercise-header">
+                            <h3>Technical Question for Freshers</h3>
+                            <div class="exercise-type type-tech">TECHNICAL <span class="fresher-tag">FRESHER</span></div>
+                        </div>
+                        
+                        <div class="exercise-question" id="tech-question">
+                            Explain a technical project you worked on during your studies. What was your role and what did you learn from it?
+                        </div>
+                        
+                        <div class="exercise-scenario">
+                            Interviewer: "I'd like to understand your technical capabilities through your academic projects."
+                        </div>
+                        
+                        <div class="ai-voice-controls">
+                            <button class="ai-voice-btn" id="tech-speak-question-btn">
+                                <i class="fas fa-volume-up"></i> Hear Question
+                            </button>
+                            <button class="ai-voice-btn" id="tech-speak-instructions-btn">
+                                <i class="fas fa-info-circle"></i> Hear Instructions
+                            </button>
+                            <button class="ai-voice-btn" id="tech-speak-sample-btn">
+                                <i class="fas fa-play-circle"></i> Hear Sample Answer
+                            </button>
+                        </div>
+                        
+                        <div class="ai-speaking-indicator" id="tech-speaking-indicator">
+                            <div class="ai-speaking-dots">
+                                <div class="ai-speaking-dot"></div>
+                                <div class="ai-speaking-dot"></div>
+                                <div class="ai-speaking-dot"></div>
+                            </div>
+                            <span>AI Speaking...</span>
+                        </div>
+                        
+                        <div class="sample-answer" id="tech-sample-answer">
+                            <h4><i class="fas fa-lightbulb"></i> Sample Answer for Freshers</h4>
+                            <p>"In my final year, I worked on a web-based library management system using HTML, CSS, JavaScript, and PHP. I was responsible for designing the user interface and implementing the book search functionality. This project taught me how to work with databases, handle user authentication, and create responsive designs. I also learned the importance of testing and debugging when we encountered issues with the search algorithm. This experience solidified my interest in web development and gave me practical skills that I can apply in a professional setting."</p>
+                        </div>
+                        
+                        <div class="timer-container">
+                            <i class="fas fa-clock"></i>
+                            <div class="timer" id="tech-timer">03:00</div>
+                            <span>Time Remaining</span>
+                        </div>
+                        
+                        <!-- Voice Activity Indicator -->
+                        <div class="voice-activity-indicator" id="tech-voice-activity">
+                            <div class="voice-bar" id="tech-voice-bar-1"></div>
+                            <div class="voice-bar" id="tech-voice-bar-2"></div>
+                            <div class="voice-bar" id="tech-voice-bar-3"></div>
+                            <div class="voice-bar" id="tech-voice-bar-4"></div>
+                            <div class="voice-bar" id="tech-voice-bar-5"></div>
+                            <div class="voice-bar" id="tech-voice-bar-6"></div>
+                            <div class="voice-bar" id="tech-voice-bar-7"></div>
+                            <div class="voice-bar" id="tech-voice-bar-8"></div>
+                        </div>
+                        
+                        <!-- Recording Status -->
+                        <div class="recording-status" id="tech-recording-status">
+                            <i class="fas fa-microphone"></i>
+                            <span id="tech-status-text">Recording in progress...</span>
+                        </div>
+                        
+                        <!-- Retry Prompt -->
+                        <div class="retry-prompt" id="tech-retry-prompt">
+                            <i class="fas fa-redo-alt"></i>
+                            <div>
+                                <p><strong>Please try again</strong></p>
+                                <p>Your answer was too short or contained long pauses. Try to speak continuously for at least 30 seconds.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recording-indicator" id="tech-recording-indicator">
+                            <div class="recording-dots">
+                                <div class="recording-dot"></div>
+                                <div class="recording-dot"></div>
+                                <div class="recording-dot"></div>
+                            </div>
+                            <span>Recording... Speak now!</span>
+                        </div>
+                        
+                        <div class="loading-indicator" id="tech-loading-indicator">
+                            <div class="loading-spinner"></div>
+                            <span>Analyzing your response...</span>
+                        </div>
+                        
+                        <div class="voice-controls">
+                            <button class="voice-btn" id="tech-start-record-btn">
+                                <i class="fas fa-microphone"></i> Record Your Answer
+                            </button>
+                        </div>
+                        
+                        <div class="auto-stop-info">
+                            <i class="fas fa-info-circle"></i> Recording will automatically stop after 5 seconds of silence
+                        </div>
+                        
+                        <div class="voice-feedback" id="tech-voice-feedback">
+                            <h4><i class="fas fa-robot"></i> Feedback Analysis</h4>
+                            <div class="feedback-content">
+                                <p><strong>Technical Clarity:</strong> <span id="tech-accuracy">-</span></p>
+                                <p><strong>Project Explanation:</strong> <span id="project-explanation">-</span></p>
+                                <p><strong>Learning Reflection:</strong> <span id="learning-reflection">-</span></p>
+                                <p><strong>Overall Score:</strong> <span id="tech-overall-score">-</span></p>
+                                <p><strong>Suggestions:</strong> <span id="tech-suggestions">Record your answer to get personalized feedback</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- HR Interviews Page -->
+        <div class="page-content" id="non-technical-page">
+            <div class="main-content">
+                <h2>HR & Behavioral Questions for Freshers</h2>
+                <p>Master your responses to common HR interview questions. Progress through difficulty levels.</p>
+                
+                <div class="levels-container" style="margin-bottom: 20px;">
+                    <div class="level-card active" data-level="1">
+                        <div class="level-number">1</div>
+                        <div class="level-name">Basic Questions</div>
+                    </div>
+                    <div class="level-card" data-level="2">
+                        <div class="level-number">2</div>
+                        <div class="level-name">Scenario-Based</div>
+                    </div>
+                    <div class="level-card" data-level="3">
+                        <div class="level-number">3</div>
+                        <div class="level-name">Strengths & Weaknesses</div>
+                    </div>
+                </div>
+                
+                <div class="lesson-progress">
+                    <span>Progress: 0/10</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                
+                <div class="question-bank">
+                    <div class="question-nav">
+                        <div class="question-counter">Question 1 of 5</div>
+                        <div class="question-controls">
+                            <button class="btn" id="hr-prev-question-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                            <button class="btn" id="hr-next-question-btn">Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-exercise">
+                        <div class="exercise-header">
+                            <h3>Behavioral Question for Freshers</h3>
+                            <div class="exercise-type type-non-tech">HR <span class="fresher-tag">FRESHER</span></div>
+                        </div>
+                        
+                        <div class="exercise-question" id="hr-question">
+                            Where do you see yourself in 5 years? How does this role fit into your career plans?
+                        </div>
+                        
+                        <div class="exercise-scenario">
+                            Interviewer: "I want to understand your career aspirations and how committed you are to growing with our company."
+                        </div>
+                        
+                        <div class="ai-voice-controls">
+                            <button class="ai-voice-btn" id="hr-speak-question-btn">
+                                <i class="fas fa-volume-up"></i> Hear Question
+                            </button>
+                            <button class="ai-voice-btn" id="hr-speak-instructions-btn">
+                                <i class="fas fa-info-circle"></i> Hear Instructions
+                            </button>
+                            <button class="ai-voice-btn" id="hr-speak-sample-btn">
+                                <i class="fas fa-play-circle"></i> Hear Sample Answer
+                            </button>
+                        </div>
+                        
+                        <div class="ai-speaking-indicator" id="hr-speaking-indicator">
+                            <div class="ai-speaking-dots">
+                                <div class="ai-speaking-dot"></div>
+                                <div class="ai-speaking-dot"></div>
+                                <div class="ai-speaking-dot"></div>
+                            </div>
+                            <span>AI Speaking...</span>
+                        </div>
+                        
+                        <div class="sample-answer" id="hr-sample-answer">
+                            <h4><i class="fas fa-lightbulb"></i> Sample Answer for Freshers</h4>
+                            <p>"In five years, I see myself as a skilled professional in this field, having mastered the technical skills required for this role. I plan to start by learning the fundamentals in this position and gradually taking on more responsibilities. I'm particularly interested in developing my skills in [specific area related to the job] and eventually contributing to more complex projects. This role is the perfect starting point for my career as it offers the learning opportunities and mentorship I need to grow. I'm committed to growing with the company and taking on leadership responsibilities as I gain experience."</p>
+                        </div>
+                        
+                        <div class="timer-container">
+                            <i class="fas fa-clock"></i>
+                            <div class="timer" id="hr-timer">02:30</div>
+                            <span>Time Remaining</span>
+                        </div>
+                        
+                        <!-- Voice Activity Indicator -->
+                        <div class="voice-activity-indicator" id="hr-voice-activity">
+                            <div class="voice-bar" id="hr-voice-bar-1"></div>
+                            <div class="voice-bar" id="hr-voice-bar-2"></div>
+                            <div class="voice-bar" id="hr-voice-bar-3"></div>
+                            <div class="voice-bar" id="hr-voice-bar-4"></div>
+                            <div class="voice-bar" id="hr-voice-bar-5"></div>
+                            <div class="voice-bar" id="hr-voice-bar-6"></div>
+                            <div class="voice-bar" id="hr-voice-bar-7"></div>
+                            <div class="voice-bar" id="hr-voice-bar-8"></div>
+                        </div>
+                        
+                        <!-- Recording Status -->
+                        <div class="recording-status" id="hr-recording-status">
+                            <i class="fas fa-microphone"></i>
+                            <span id="hr-status-text">Recording in progress...</span>
+                        </div>
+                        
+                        <!-- Retry Prompt -->
+                        <div class="retry-prompt" id="hr-retry-prompt">
+                            <i class="fas fa-redo-alt"></i>
+                            <div>
+                                <p><strong>Please try again</strong></p>
+                                <p>Your answer was too short or contained long pauses. Try to speak continuously for at least 30 seconds.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recording-indicator" id="hr-recording-indicator">
+                            <div class="recording-dots">
+                                <div class="recording-dot"></div>
+                                <div class="recording-dot"></div>
+                                <div class="recording-dot"></div>
+                            </div>
+                            <span>Recording... Speak now!</span>
+                        </div>
+                        
+                        <div class="loading-indicator" id="hr-loading-indicator">
+                            <div class="loading-spinner"></div>
+                            <span>Analyzing your response...</span>
+                        </div>
+                        
+                        <div class="voice-controls">
+                            <button class="voice-btn" id="hr-start-record-btn">
+                                <i class="fas fa-microphone"></i> Record Your Answer
+                            </button>
+                        </div>
+                        
+                        <div class="auto-stop-info">
+                            <i class="fas fa-info-circle"></i> Recording will automatically stop after 5 seconds of silence
+                        </div>
+                        
+                        <div class="voice-feedback" id="hr-voice-feedback">
+                            <h4><i class="fas fa-robot"></i> Feedback Analysis</h4>
+                            <div class="feedback-content">
+                                <p><strong>Career Vision:</strong> <span id="career-vision">-</span></p>
+                                <p><strong>Role Alignment:</strong> <span id="role-alignment">-</span></p>
+                                <p><strong>Realistic Planning:</strong> <span id="realistic-planning">-</span></p>
+                                <p><strong>Overall Score:</strong> <span id="hr-overall-score">-</span></p>
+                                <p><strong>Suggestions:</strong> <span id="hr-suggestions">Record your answer to get personalized feedback</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vocabulary Page -->
+        <div class="page-content" id="vocabulary-page">
+            <div class="main-content">
+                <h2>Interview Vocabulary for Freshers</h2>
+                <p>Essential words and phrases for fresher job interviews. Click on any term to hear pronunciation and see examples.</p>
+                
+                <div class="vocabulary-list">
+                    <div class="vocab-item" data-term="Enthusiastic">
+                        <div class="vocab-term">Enthusiastic</div>
+                        <div class="vocab-def">Having or showing intense and eager enjoyment</div>
+                        <div class="vocab-example">"I'm enthusiastic about applying my academic knowledge in a practical setting."</div>
+                    </div>
+                    <div class="vocab-item" data-term="Adaptable">
+                        <div class="vocab-term">Adaptable</div>
+                        <div class="vocab-def">Able to adjust to new conditions</div>
+                        <div class="vocab-example">"I'm adaptable and can quickly learn new technologies as required."</div>
+                    </div>
+                    <div class="vocab-item" data-term="Proactive">
+                        <div class="vocab-term">Proactive</div>
+                        <div class="vocab-def">Creating or controlling a situation</div>
+                        <div class="vocab-example">"I took a proactive approach to learning additional programming languages beyond my curriculum."</div>
+                    </div>
+                    <div class="vocab-item" data-term="Collaborative">
+                        <div class="vocab-term">Collaborative</div>
+                        <div class="vocab-def">Produced by or involving two or more parties working together</div>
+                        <div class="vocab-example">"I enjoy collaborative environments where I can learn from experienced colleagues."</div>
+                    </div>
+                    <div class="vocab-item" data-term="Diligent">
+                        <div class="vocab-term">Diligent</div>
+                        <div class="vocab-def">Having or showing care in one's work</div>
+                        <div class="vocab-example">"My diligent approach to studies helped me maintain a high GPA throughout college."</div>
+                    </div>
+                    <div class="vocab-item" data-term="Eager to learn">
+                        <div class="vocab-term">Eager to learn</div>
+                        <div class="vocab-def">Keen and enthusiastic about acquiring knowledge</div>
+                        <div class="vocab-example">"I'm eager to learn from the experienced professionals in your organization."</div>
+                    </div>
+                </div>
+                
+                <div class="voice-section" style="margin-top: 30px;">
+                    <h3>Practice Pronunciation</h3>
+                    <p>Select a term above and practice saying it with correct pronunciation</p>
+                    
+                    <div class="ai-voice-controls">
+                        <button class="ai-voice-btn" id="vocab-speak-term-btn">
+                            <i class="fas fa-volume-up"></i> Hear Selected Term
+                        </button>
+                        <button class="ai-voice-btn" id="vocab-speak-example-btn">
+                            <i class="fas fa-play-circle"></i> Hear Example Sentence
+                        </button>
+                    </div>
+                    
+                    <div class="ai-speaking-indicator" id="vocab-speaking-indicator">
+                        <div class="ai-speaking-dots">
+                            <div class="ai-speaking-dot"></div>
+                            <div class="ai-speaking-dot"></div>
+                            <div class="ai-speaking-dot"></div>
+                        </div>
+                        <span>AI Speaking...</span>
+                    </div>
+                    
+                    <div class="voice-controls">
+                        <button class="voice-btn" id="vocab-record-btn">
+                            <i class="fas fa-microphone"></i> Record Pronunciation
+                        </button>
+                    </div>
+                    
+                    <div class="voice-feedback" id="vocab-voice-feedback">
+                        <h4><i class="fas fa-robot"></i> Pronunciation Feedback</h4>
+                        <div class="feedback-content">
+                            <p><strong>Selected Term:</strong> <span id="selected-term">None</span></p>
+                            <p><strong>Accuracy:</strong> <span id="pronunciation-accuracy">-</span></p>
+                            <p><strong>Suggestions:</strong> <span id="pronunciation-suggestions">Select a term and record your pronunciation to get feedback</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scoreboard Page -->
+        <div class="page-content" id="scoreboard-page">
+            <div class="scoreboard">
+                <h2>Your Performance Scoreboard</h2>
+                <p>Track your progress across different interview skills and categories</p>
+                
+                <div class="score-categories">
+                    <div class="score-category">
+                        <h3>Technical Skills</h3>
+                        <div class="score-value" id="technical-score">0%</div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="technical-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-category">
+                        <h3>Communication</h3>
+                        <div class="score-value" id="communication-score">0%</div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="communication-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-category">
+                        <h3>Content Relevance</h3>
+                        <div class="score-value" id="content-score">0%</div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="content-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-category">
+                        <h3>Confidence</h3>
+                        <div class="score-value" id="confidence-score">0%</div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="confidence-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-details">
+                    <h3>Detailed Analysis</h3>
+                    <div class="analysis-criteria">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <span class="criterion-name">Answer Structure</span>
+                                <span class="criterion-score" id="structure-score">-</span>
+                            </div>
+                            <div class="criterion-feedback" id="structure-feedback">No data yet. Complete practice sessions to see your analysis.</div>
+                        </div>
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <span class="criterion-name">Vocabulary Usage</span>
+                                <span class="criterion-score" id="vocabulary-score">-</span>
+                            </div>
+                            <div class="criterion-feedback" id="vocabulary-feedback">No data yet. Complete practice sessions to see your analysis.</div>
+                        </div>
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <span class="criterion-name">Pronunciation</span>
+                                <span class="criterion-score" id="pronunciation-score">-</span>
+                            </div>
+                            <div class="criterion-feedback" id="pronunciation-feedback">No data yet. Complete practice sessions to see your analysis.</div>
+                        </div>
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <span class="criterion-name">Fluency</span>
+                                <span class="criterion-score" id="fluency-score">-</span>
+                            </div>
+                            <div class="criterion-feedback" id="fluency-feedback">No data yet. Complete practice sessions to see your analysis.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Recent Practice Sessions</h2>
+                <div id="practice-sessions-list">
+                    <p style="text-align: center; color: var(--gray); padding: 20px;">No practice sessions completed yet. Start practicing to see your results here.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>DreamBuildRise &copy; 2023 - Voice-Based English for Fresher Job Interviews</p>
+        </footer>
+    </div>
 
-<!-- PROFILE PAGE -->
-<div class="container" id="profilePage" style="display:none;">
-<h1>👋 Welcome!</h1>
-<p>Enter your name to start:</p>
-<input type="text" id="userName" placeholder="Enter your name">
-<button class="btn" onclick="saveProfile()">Continue ➡️</button>
-</div>
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle" id="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
 
-<!-- MAIN APP -->
-<div class="container" id="app" style="display:none;">
-<h1>🌟 Dream Build Rise</h1>
-<p id="welcomeText"></p>
-<button class="level-btn" onclick="selectLevel('vocabulary')">🧠 Vocabulary</button>
-<button class="level-btn" onclick="selectLevel('grammar')">✏️ Grammar</button>
-<button class="level-btn" onclick="selectLevel('sentences')">🗣️ Sentences</button>
-<button class="level-btn" onclick="startInterview()">💼 AI Interview Practice</button>
-<button class="level-btn" onclick="startWeeklyTest()">📅 Weekly Test</button>
-</div>
-
-<script>
-let userName="", currentLevel="", currentDifficulty="", score=0, questionPool=[];
-
-// VOICE
-function speak(text){
-  const utter=new SpeechSynthesisUtterance(text);
-  utter.lang="en-US"; utter.rate=1; utter.pitch=1;
-  speechSynthesis.speak(utter);
-}
-
-// PROFILE
-function showProfile(){ 
-  document.getElementById("frontPage").style.display="none"; 
-  document.getElementById("profilePage").style.display="block"; 
-  speak("Welcome! Please enter your name."); 
-}
-function saveProfile(){ 
-  const name=document.getElementById("userName").value.trim(); 
-  if(!name){ alert("Please enter your name!"); return; } 
-  userName=name;
-  document.getElementById("profilePage").style.display="none"; 
-  document.getElementById("app").style.display="block"; 
-  document.getElementById("welcomeText").innerText=`Hello, ${userName}! Choose your category below 👇`; 
-  speak(`Hello ${userName}! Welcome to Dream Build Rise.`);
-}
-
-// QUESTIONS DATA
-const levels = {
-  vocabulary:{
-    basic:[
-      {question:"Synonym of 'big'?", options:["Small","Tiny","Large","Thin"], correct:"Large"},
-      {question:"Meaning of 'happy'?", options:["Sad","Joyful","Angry","Tired"], correct:"Joyful"},
-      {question:"Synonym of 'fast'?", options:["Slow","Quick","Lazy","Weak"], correct:"Quick"},
-      {question:"Meaning of 'angry'?", options:["Furious","Calm","Joyful","Tired"], correct:"Furious"},
-      {question:"Antonym of 'hot'?", options:["Cold","Warm","Boiling","Dry"], correct:"Cold"}
-    ],
-    medium:[
-      {question:"Synonym of 'robust'?", options:["Weak","Strong","Fragile","Complex"], correct:"Strong"},
-      {question:"Meaning of 'compile'?", options:["Interpret","Assemble","Delete","Execute"], correct:"Assemble"},
-      {question:"Synonym of 'ancient'?", options:["Modern","Old","New","Young"], correct:"Old"},
-      {question:"Antonym of 'easy'?", options:["Hard","Soft","Simple","Light"], correct:"Hard"},
-      {question:"Synonym of 'begin'?", options:["Stop","Finish","Start","End"], correct:"Start"}
-    ],
-    hard:[
-      {question:"Synonym of 'facilitate'?", options:["Hinder","Enable","Prevent","Stop"], correct:"Enable"},
-      {question:"Meaning of 'optimize'?", options:["Worsen","Improve efficiency","Delete","Ignore"], correct:"Improve efficiency"},
-      {question:"Synonym of 'elaborate'?", options:["Simple","Explain","Brief","Hide"], correct:"Explain"},
-      {question:"Antonym of 'scarce'?", options:["Plentiful","Rare","Limited","Sparse"], correct:"Plentiful"},
-      {question:"Meaning of 'resilient'?", options:["Weak","Flexible","Rigid","Lazy"], correct:"Flexible"}
-    ]
-  },
-  grammar:{
-    basic:[
-      {question:"He _____ to school every day.", options:["go","going","goes","gone"], correct:"goes"},
-      {question:"I _____ a student.", options:["am","is","are","was"], correct:"am"},
-      {question:"She _____ happy.", options:["is","are","am","be"], correct:"is"},
-      {question:"They _____ at home.", options:["is","are","am","be"], correct:"are"},
-      {question:"I _____ reading a book.", options:["am","is","are","be"], correct:"am"}
-    ],
-    medium:[
-      {question:"She has been here _____ five years.", options:["since","for","from","at"], correct:"for"},
-      {question:"If I _____ enough money, I would buy a laptop.", options:["have","had","has","having"], correct:"had"},
-      {question:"He _____ finished his homework before dinner.", options:["has","have","had","having"], correct:"has"},
-      {question:"We _____ playing football now.", options:["is","are","am","be"], correct:"are"},
-      {question:"The teacher _____ not like late submissions.", options:["do","does","did","doing"], correct:"does"}
-    ],
-    hard:[
-      {question:"He _____ not like coffee.", options:["do","does","did","doing"], correct:"does"},
-      {question:"The sun _____ in the east.", options:["rise","rises","rose","raising"], correct:"rises"},
-      {question:"If it _____, we will stay home.", options:["rains","rain","rained","is raining"], correct:"rains"},
-      {question:"She _____ already finished her work.", options:["have","has","had","having"], correct:"has"},
-      {question:"I wish I _____ more time.", options:["have","had","has","having"], correct:"had"}
-    ]
-  },
-  sentences:{
-    basic:[
-      {question:"I have a pen.", options:["I has a pen.","I have a pen.","I having pen.","I am have pen."], correct:"I have a pen."},
-      {question:"She is happy.", options:["She are happy.","She is happy.","She be happy.","She am happy."], correct:"She is happy."},
-      {question:"They play football.", options:["They plays football.","They play football.","They playing football.","They is play football."], correct:"They play football."},
-      {question:"We are students.", options:["We is students.","We are students.","We am students.","We be students."], correct:"We are students."},
-      {question:"It is raining now.", options:["It raining now.","It is raining now.","It are raining now.","It be raining now."], correct:"It is raining now."}
-    ],
-    medium:[
-      {question:"He can sing well.", options:["He can sings well.","He can sing well.","He can singing well.","He can sang well."], correct:"He can sing well"},
-      {question:"I have finished my work.", options:["I has finished","I have finished","I having finished","I am finished"], correct:"I have finished"},
-      {question:"We were late yesterday.", options:["We was late","We were late","We is late","We am late"], correct:"We were late"},
-      {question:"She has been working here for years.", options:["She have been","She has been","She had been","She having been"], correct:"She has been"},
-      {question:"If I were rich, I would travel.", options:["If I was rich","If I were rich","If I am rich","If I be rich"], correct:"If I were rich"}
-    ],
-    hard:[
-      {question:"They have already finished.", options:["They has finished","They have finished","They had finished","They having finished"], correct:"They have finished"},
-      {question:"He can solve problems easily.", options:["He can solves","He can solve","He can solving","He can solved"], correct:"He can solve"},
-      {question:"I wish I had studied more.", options:["I wish I has studied","I wish I had studied","I wish I have studied","I wish I having studied"], correct:"I wish I had studied"},
-      {question:"She would have come if invited.", options:["She would has come","She would have come","She would have came","She would having come"], correct:"She would have come"},
-      {question:"Had I known, I would have acted.", options:["Had I knew","Had I known","Had I know","Had I knowing"], correct:"Had I known"}
-    ]
-  }
-};
-
-// LEVEL SELECTION
-function selectLevel(level){
-  currentLevel=level;
-  document.getElementById("app").innerHTML=`
-    <h1>${level.charAt(0).toUpperCase()+level.slice(1)}</h1>
-    <p>Select difficulty level:</p>
-    <button class="level-btn" onclick="startLevel('basic')">Basic</button>
-    <button class="level-btn" onclick="startLevel('medium')">Medium</button>
-    <button class="level-btn" onclick="startLevel('hard')">Hard</button>
-    <button class="btn" onclick="restart()">🏠 Back to Home</button>
-  `;
-}
-
-// START LEVEL
-function startLevel(difficulty){
-  currentDifficulty=difficulty;
-  score=0;
-  questionPool=[...levels[currentLevel][difficulty]];
-  loadQuestion();
-  speak(`${userName}, welcome to ${currentLevel} ${difficulty} level.`);
-}
-
-// LOAD QUESTION
-function loadQuestion(){
-  if(questionPool.length===0){ showResult(); return; }
-  const rand=Math.floor(Math.random()*questionPool.length);
-  const data=questionPool[rand]; questionPool.splice(rand,1);
-  document.getElementById("app").innerHTML=`
-    <h1>${currentLevel.charAt(0).toUpperCase()+currentLevel.slice(1)} - ${currentDifficulty.charAt(0).toUpperCase()+currentDifficulty.slice(1)}</h1>
-    <p class="question">${data.question}</p>
-    ${data.options.map(opt=>`<button class='option' onclick="checkAnswer('${opt}')">${opt}</button>`).join('')}
-    <p id="result"></p>`;
-  speak(data.question);
-}
-
-// CHECK ANSWER
-function checkAnswer(selected){
-  const correctAnswer=levels[currentLevel][currentDifficulty].find(q=>q.question===document.querySelector('.question').innerText).correct;
-  const result=document.getElementById("result");
-  if(selected===correctAnswer){ result.innerHTML="✅ Correct!"; speak("Correct!"); score++; setTimeout(loadQuestion,1500); }
-  else{ result.innerHTML=`❌ Wrong! Correct answer: ${correctAnswer}<br>Session ended.`; speak(`Oops! Correct answer is ${correctAnswer}. Session ended.`); document.querySelectorAll('.option').forEach(btn=>btn.disabled=true); setTimeout(restart,3000); }
-}
-
-// SHOW RESULT
-function showResult(){ document.getElementById("app").innerHTML=`<h1>🎯 Level Complete!</h1><p>${userName}, your Score: ${score}</p><button class="btn" onclick="restart()">🏠 Back to Home</button>`; speak(`${userName}, level complete. Your score is ${score}`); }
-
-// RESTART
-function restart(){
-  document.getElementById("app").innerHTML=`
-    <h1>🌟 Dream Build Rise</h1>
-    <p id="welcomeText">Hello, ${userName}! Choose your category below 👇</p>
-    <button class="level-btn" onclick="selectLevel('vocabulary')">🧠 Vocabulary</button>
-    <button class="level-btn" onclick="selectLevel('grammar')">✏️ Grammar</button>
-    <button class="level-btn" onclick="selectLevel('sentences')">🗣️ Sentences</button>
-    <button class="level-btn" onclick="startInterview()">💼 AI Interview Practice</button>
-    <button class="level-btn" onclick="startWeeklyTest()">📅 Weekly Test</button>
-  `;
-  speak(`Welcome back, ${userName}! Choose your category to continue.`);
-}
-
-// AI INTERVIEW
-const interviewQuestions = [
-  "Tell me about yourself.",
-  "Why do you want this job?",
-  "What are your strengths?",
-  "What are your weaknesses?",
-  "Where do you see yourself in 5 years?"
-];
-let interviewIndex = 0;
-function startInterview(){
-  interviewIndex = 0;
-  document.getElementById("app").innerHTML = `<h1>💼 AI Interview</h1><p id="interviewQ">Get ready...</p><button class="btn" onclick="restart()">🏠 Back to Home</button>`;
-  speak("Welcome to AI interview practice. Answer the following questions orally.");
-  setTimeout(nextInterviewQuestion,1000);
-}
-function nextInterviewQuestion(){
-  if(interviewIndex >= interviewQuestions.length){
-    document.getElementById("interviewQ").innerText = `🎯 Interview Complete! Well done, ${userName}!`;
-    speak(`Interview complete! Well done, ${userName}!`);
-    return;
-  }
-  const question = interviewQuestions[interviewIndex];
-  document.getElementById("interviewQ").innerText = question + "\n(Start speaking now)";
-  speak(question);
-  if(!('webkitSpeechRecognition' in window)){ alert("Speech Recognition not supported in this browser."); return; }
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = "en-US"; recognition.interimResults=false; recognition.maxAlternatives=1;
-  recognition.start();
-  recognition.onresult=function(event){
-    const userAnswer=event.results[0][0].transcript;
-    document.getElementById("interviewQ").innerText += `\nYour answer: ${userAnswer}`;
-    speak("Got it! Let's move to the next question.");
-    interviewIndex++;
-    setTimeout(nextInterviewQuestion,4000);
-  }
-  recognition.onerror=function(event){
-    document.getElementById("interviewQ").innerText += "\nSorry, I could not understand. Moving to next question.";
-    interviewIndex++;
-    setTimeout(nextInterviewQuestion,3000);
-  }
-}
-
-// WEEKLY TEST
-function startWeeklyTest(){
-  let allQuestions = [];
-  for(const cat in levels){ for(const diff in levels[cat]){ allQuestions = allQuestions.concat(levels[cat][diff]); } }
-  questionPool = allQuestions.sort(()=>0.5-Math.random()).slice(0,10);
-  score=0;
-  document.getElementById("app").innerHTML=`<h1>📅 Weekly Test</h1>`;
-  speak(`${userName}, welcome to your weekly test. Let's begin!`);
-  loadWeeklyQuestion();
-}
-function loadWeeklyQuestion(){
-  if(questionPool.length===0){ showWeeklyResult(); return; }
-  const data = questionPool.shift();
-  document.getElementById("app").innerHTML=`
-    <h1>📅 Weekly Test</h1>
-    <p class="question">${data.question}</p>
-    ${data.options.map(opt=>`<button class='option' onclick="checkWeeklyAnswer('${opt}','${data.correct}')">${opt}</button>`).join('')}
-    <p id="result"></p>`;
-  speak(data.question);
-}
-function checkWeeklyAnswer(selected, correct){
-  const result=document.getElementById("result");
-  if(selected===correct){ result.innerHTML="✅ Correct!"; speak("Correct!"); score++; setTimeout(loadWeeklyQuestion,1500); }
-  else{ result.innerHTML=`❌ Wrong! Correct answer: ${correct}`; speak(`Oops! Correct answer is ${correct}`); setTimeout(loadWeeklyQuestion,2000); }
-}
-function showWeeklyResult(){
-  document.getElementById("app").innerHTML=`
-    <h1>🎯 Weekly Test Complete</h1>
-    <p>${userName}, your Score: ${score}/10</p>
-    <button class="btn" onclick="restart()">🏠 Back to Home</button>`;
-  speak(`${userName}, weekly test complete. Your score is ${score} out of 10`);
-}
-</script>
+    <script>
+        // User data
+        let userName = "";
+        let userXP = 0;
+        let userLevel = 1;
+        let completedModules = [];
+        let currentStreak = 0;
+        let selectedVocabTerm = "";
+        let isDarkMode = false;
+        
+        // Performance tracking
+        let performanceScores = {
+            technical: 0,
+            communication: 0,
+            content: 0,
+            confidence: 0,
+            structure: 0,
+            vocabulary: 0,
+            pronunciation: 0,
+            fluency: 0
+        };
+        
+        let practiceSessions = [];
+        
+        // Voice recording with activity detection
+        let recordingTimeout;
+        let timerInterval;
+        let silenceTimer;
+        let voiceActivityInterval;
+        let isRecording = false;
+        let recordingStartTime;
+        let totalRecordingTime = 0;
+        let voiceDetected = false;
+        
+        // Text-to-speech functionality
+        let speechSynthesis = window.speechSynthesis;
+        let isSpeaking = false;
+        let currentUtterance = null;
+        
+        // Initialize speech synthesis
+        function initSpeechSynthesis() {
+            if (!speechSynthesis) {
+                console.warn("Speech synthesis not supported in this browser");
+                return false;
+            }
+            
+            // Get available voices
+            let voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                speechSynthesis.addEventListener('voiceschanged', function() {
+                    voices = speechSynthesis.getVoices();
+                });
+            }
+            
+            return true;
+        }
+        
+        // Speak text using Web Speech API
+        function speakText(text, indicatorId, rate = 1.0, pitch = 1.0) {
+            if (!speechSynthesis) {
+                alert("Your browser doesn't support text-to-speech. Please try Chrome, Edge, or Safari.");
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            if (isSpeaking) {
+                speechSynthesis.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Configure voice settings
+            utterance.rate = rate;
+            utterance.pitch = pitch;
+            utterance.volume = 1.0;
+            
+            // Try to use a natural-sounding voice
+            const voices = speechSynthesis.getVoices();
+            const englishVoice = voices.find(voice => 
+                voice.lang.includes('en') && 
+                (voice.name.includes('Google') || voice.name.includes('Natural') || voice.name.includes('Samantha') || voice.name.includes('Karen'))
+            );
+            
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+            
+            // Show speaking indicator
+            const indicator = document.getElementById(indicatorId);
+            if (indicator) {
+                indicator.classList.add('active');
+            }
+            
+            // Update button states
+            document.querySelectorAll('.ai-voice-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            utterance.onstart = function() {
+                isSpeaking = true;
+                currentUtterance = utterance;
+            };
+            
+            utterance.onend = function() {
+                isSpeaking = false;
+                currentUtterance = null;
+                
+                // Hide speaking indicator
+                if (indicator) {
+                    indicator.classList.remove('active');
+                }
+                
+                // Re-enable buttons
+                document.querySelectorAll('.ai-voice-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Speech synthesis error:', event);
+                isSpeaking = false;
+                currentUtterance = null;
+                
+                // Hide speaking indicator
+                if (indicator) {
+                    indicator.classList.remove('active');
+                }
+                
+                // Re-enable buttons
+                document.querySelectorAll('.ai-voice-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+                
+                alert("There was an error with text-to-speech. Please check your browser settings or try a different browser.");
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        // Stop speaking
+        function stopSpeaking() {
+            if (speechSynthesis && isSpeaking) {
+                speechSynthesis.cancel();
+                isSpeaking = false;
+                currentUtterance = null;
+                
+                // Hide all speaking indicators
+                document.querySelectorAll('.ai-speaking-indicator').forEach(indicator => {
+                    indicator.classList.remove('active');
+                });
+                
+                // Re-enable buttons
+                document.querySelectorAll('.ai-voice-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+            }
+        }
+        
+        // Initialize speech synthesis when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initSpeechSynthesis();
+        });
+        
+        // Question banks for different levels with fresher-specific questions
+        const techQuestions = {
+            1: [
+                "Explain a technical project you worked on during your studies. What was your role and what did you learn from it?",
+                "What programming languages are you familiar with, and which one do you prefer and why?",
+                "Describe the difference between front-end and back-end development.",
+                "What is version control and why is it important for software development?",
+                "Explain what an API is and provide a simple example of how it works."
+            ],
+            2: [
+                "Tell me about a challenging technical problem you faced in a project and how you solved it.",
+                "What databases have you worked with and what are their advantages?",
+                "Describe your experience with any frameworks or libraries you've used in projects.",
+                "How do you approach learning a new programming language or technology?",
+                "What is your understanding of agile development methodology?"
+            ],
+            3: [
+                "How would you design a simple web application from scratch?",
+                "What steps would you take to optimize a slow database query?",
+                "Explain the concept of object-oriented programming with a real-world example.",
+                "How do you ensure the quality of your code?",
+                "Describe a situation where you had to work with a team on a technical project."
+            ]
+        };
+        
+        const hrQuestions = {
+            1: [
+                "Tell me about yourself and why you're interested in this position.",
+                "As a fresher with no work experience, what qualities do you have that make you suitable for this role?",
+                "Why did you choose your field of study?",
+                "What do you know about our company?",
+                "Why should we hire you over other candidates?"
+            ],
+            2: [
+                "Where do you see yourself in 5 years? How does this role fit into your career plans?",
+                "Tell me about a time you had to work in a team during your studies. What was your role?",
+                "Describe a situation where you had to overcome a challenge in your academic life.",
+                "What are your strengths and weaknesses?",
+                "How do you handle pressure or tight deadlines?"
+            ],
+            3: [
+                "Tell me about a time you failed at something and what you learned from it.",
+                "How do you stay updated with the latest trends in your field?",
+                "What kind of work environment do you prefer?",
+                "Describe a situation where you had to persuade others to see things your way.",
+                "What motivates you to do your best work?"
+            ]
+        };
+        
+        // Page navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all buttons and pages
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding page
+                const pageId = this.getAttribute('data-page') + '-page';
+                document.getElementById(pageId).classList.add('active');
+                
+                // Update scoreboard if navigating to it
+                if (this.getAttribute('data-page') === 'scoreboard') {
+                    updateScoreboard();
+                }
+            });
+        });
+        
+        // Name entry functionality
+        document.getElementById('save-name-btn').addEventListener('click', function() {
+            const nameInput = document.getElementById('user-name-input');
+            if (nameInput.value.trim() === '') {
+                alert('Please enter your name to continue');
+                return;
+            }
+            
+            userName = nameInput.value.trim();
+            document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+            document.getElementById('name-modal-overlay').classList.remove('active');
+            
+            // Update XP and level display
+            updateXPDisplay();
+            updateLevelDisplay();
+        });
+        
+        // Update XP display
+        function updateXPDisplay() {
+            document.getElementById('user-xp').textContent = userXP;
+        }
+        
+        // Update level display
+        function updateLevelDisplay() {
+            document.getElementById('user-level').textContent = userLevel;
+        }
+        
+        // Add XP function
+        function addXP(amount) {
+            userXP += amount;
+            
+            // Check for level up
+            const newLevel = Math.floor(userXP / 100) + 1;
+            if (newLevel > userLevel) {
+                userLevel = newLevel;
+                updateLevelDisplay();
+                showLevelUpNotification();
+            }
+            
+            updateXPDisplay();
+            updateProgressRing();
+        }
+        
+        // Show level up notification
+        function showLevelUpNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--primary), var(--fresher-color));
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideInRight 0.5s ease;
+            `;
+            notification.innerHTML = `
+                <h3>Level Up! 🎉</h3>
+                <p>You've reached Level ${userLevel}!</p>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // Update progress ring
+        function updateProgressRing() {
+            const progressPercent = Math.min(100, (userXP % 100));
+            const progressRing = document.getElementById('progress-ring');
+            const circumference = 2 * Math.PI * 52;
+            const offset = circumference - (progressPercent / 100) * circumference;
+            
+            progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressRing.style.strokeDashoffset = offset;
+            
+            document.getElementById('progress-percent').textContent = `${progressPercent}%`;
+        }
+        
+        // Set up AI voice buttons with actual text-to-speech
+        document.getElementById('test-ai-voice-btn').addEventListener('click', function() {
+            speakText("Hello! This is a test of the AI voice system. If you can hear this clearly, your speakers are working properly.", "home-speaking-indicator");
+        });
+        
+        document.getElementById('name-modal-speak-btn').addEventListener('click', function() {
+            speakText("Welcome to DreamBuildRise! Please enter your name to get started with personalized interview practice for freshers.", "name-modal-speaking-indicator");
+        });
+        
+        document.getElementById('home-speak-question-btn').addEventListener('click', function() {
+            speakText("As a fresher with no work experience, what qualities do you have that make you suitable for this role?", "home-speaking-indicator");
+        });
+        
+        document.getElementById('home-speak-instructions-btn').addEventListener('click', function() {
+            speakText("This is a common question for freshers. Focus on your academic achievements, projects, internships, and soft skills. Highlight your willingness to learn and adapt to new environments.", "home-speaking-indicator", 0.9);
+        });
+        
+        document.getElementById('home-speak-sample-btn').addEventListener('click', function() {
+            speakText("Although I'm a fresher, I've developed strong problem-solving skills through my academic projects. For example, in my final year project, I led a team of four to develop a mobile application that helped local businesses track inventory. I'm a quick learner, adaptable, and eager to apply my theoretical knowledge in a practical setting. I also have excellent communication skills, which I honed through college presentations and group projects.", "home-speaking-indicator");
+            document.getElementById('home-sample-answer').classList.add('active');
+        });
+        
+        document.getElementById('tech-speak-question-btn').addEventListener('click', function() {
+            speakText("Explain a technical project you worked on during your studies. What was your role and what did you learn from it?", "tech-speaking-indicator");
+        });
+        
+        document.getElementById('tech-speak-instructions-btn').addEventListener('click', function() {
+            speakText("When describing a technical project, focus on your specific contributions, the technologies you used, challenges you faced, and what you learned from the experience. This shows your practical application of knowledge.", "tech-speaking-indicator", 0.9);
+        });
+        
+        document.getElementById('tech-speak-sample-btn').addEventListener('click', function() {
+            speakText("In my final year, I worked on a web-based library management system using HTML, CSS, JavaScript, and PHP. I was responsible for designing the user interface and implementing the book search functionality. This project taught me how to work with databases, handle user authentication, and create responsive designs. I also learned the importance of testing and debugging when we encountered issues with the search algorithm. This experience solidified my interest in web development and gave me practical skills that I can apply in a professional setting.", "tech-speaking-indicator");
+            document.getElementById('tech-sample-answer').classList.add('active');
+        });
+        
+        document.getElementById('hr-speak-question-btn').addEventListener('click', function() {
+            speakText("Where do you see yourself in 5 years? How does this role fit into your career plans?", "hr-speaking-indicator");
+        });
+        
+        document.getElementById('hr-speak-instructions-btn').addEventListener('click', function() {
+            speakText("For this question, show ambition but also realistic planning. Connect your career goals with the company's growth. Avoid saying you want the interviewer's job specifically.", "hr-speaking-indicator", 0.9);
+        });
+        
+        document.getElementById('hr-speak-sample-btn').addEventListener('click', function() {
+            speakText("In five years, I see myself as a skilled professional in this field, having mastered the technical skills required for this role. I plan to start by learning the fundamentals in this position and gradually taking on more responsibilities. I'm particularly interested in developing my skills in web development and eventually contributing to more complex projects. This role is the perfect starting point for my career as it offers the learning opportunities and mentorship I need to grow. I'm committed to growing with the company and taking on leadership responsibilities as I gain experience.", "hr-speaking-indicator");
+            document.getElementById('hr-sample-answer').classList.add('active');
+        });
+        
+        document.getElementById('vocab-speak-term-btn').addEventListener('click', function() {
+            if (selectedVocabTerm === "") {
+                alert("Please select a vocabulary term first");
+                return;
+            }
+            speakText(selectedVocabTerm, "vocab-speaking-indicator", 0.8);
+        });
+        
+        document.getElementById('vocab-speak-example-btn').addEventListener('click', function() {
+            if (selectedVocabTerm === "") {
+                alert("Please select a vocabulary term first");
+                return;
+            }
+            
+            let exampleText = "";
+            switch(selectedVocabTerm) {
+                case "Enthusiastic":
+                    exampleText = "I'm enthusiastic about applying my academic knowledge in a practical setting.";
+                    break;
+                case "Adaptable":
+                    exampleText = "I'm adaptable and can quickly learn new technologies as required.";
+                    break;
+                case "Proactive":
+                    exampleText = "I took a proactive approach to learning additional programming languages beyond my curriculum.";
+                    break;
+                case "Collaborative":
+                    exampleText = "I enjoy collaborative environments where I can learn from experienced colleagues.";
+                    break;
+                case "Diligent":
+                    exampleText = "My diligent approach to studies helped me maintain a high GPA throughout college.";
+                    break;
+                case "Eager to learn":
+                    exampleText = "I'm eager to learn from the experienced professionals in your organization.";
+                    break;
+                default:
+                    exampleText = "Please select a vocabulary term to hear an example.";
+            }
+            
+            speakText(exampleText, "vocab-speaking-indicator");
+        });
+        
+        // Start recording with voice activity detection
+        function startRecording(button, duration, timerId) {
+            // Get elements for this specific exercise
+            const exercise = button.closest('.lesson-exercise');
+            const recordingIndicator = exercise.querySelector('.recording-indicator');
+            const recordingStatus = exercise.querySelector('.recording-status');
+            const statusText = exercise.querySelector('.recording-status span');
+            const voiceActivity = exercise.querySelector('.voice-activity-indicator');
+            const retryPrompt = exercise.querySelector('.retry-prompt');
+            const loadingIndicator = exercise.querySelector('.loading-indicator');
+            const voiceFeedback = exercise.querySelector('.voice-feedback');
+            const timer = document.getElementById(timerId);
+            
+            // Reset state
+            isRecording = true;
+            recordingStartTime = Date.now();
+            totalRecordingTime = 0;
+            voiceDetected = false;
+            
+            // Visual feedback for recording
+            button.classList.add('recording');
+            button.innerHTML = '<i class="fas fa-microphone"></i> Stop Recording';
+            button.disabled = false;
+            
+            // Show recording indicators
+            recordingIndicator.classList.add('active');
+            recordingStatus.classList.add('active');
+            statusText.textContent = "Recording in progress...";
+            voiceActivity.style.display = 'flex';
+            
+            // Hide previous feedback and retry prompt
+            if (voiceFeedback) {
+                voiceFeedback.style.display = 'none';
+            }
+            if (retryPrompt) {
+                retryPrompt.classList.remove('active');
+            }
+            
+            // Start timer
+            let timeLeft = duration;
+            updateTimerDisplay(timer, timeLeft);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay(timer, timeLeft);
+                
+                if (timeLeft <= 0) {
+                    stopRecording(button, timerId);
+                }
+            }, 1000);
+            
+            // Start voice activity simulation
+            startVoiceActivitySimulation(exercise);
+            
+            // Start silence detection
+            startSilenceDetection(button, timerId, exercise);
+        }
+        
+        // Simulate voice activity for demo purposes
+        function startVoiceActivitySimulation(exercise) {
+            const voiceBars = exercise.querySelectorAll('.voice-bar');
+            let activeBarIndex = 0;
+            
+            voiceActivityInterval = setInterval(() => {
+                // Reset all bars
+                voiceBars.forEach(bar => bar.classList.remove('active'));
+                
+                // If user is "speaking", activate some bars randomly
+                if (isRecording && Math.random() > 0.3) {
+                    voiceDetected = true;
+                    const recordingStatus = exercise.querySelector('.recording-status');
+                    const statusText = exercise.querySelector('.recording-status span');
+                    
+                    recordingStatus.classList.remove('silence-detected');
+                    recordingStatus.classList.add('voice-detected');
+                    statusText.textContent = "Voice detected...";
+                    
+                    // Activate random bars to simulate voice activity
+                    const barsToActivate = Math.floor(Math.random() * 4) + 2;
+                    for (let i = 0; i < barsToActivate; i++) {
+                        const randomIndex = Math.floor(Math.random() * voiceBars.length);
+                        voiceBars[randomIndex].classList.add('active');
+                    }
+                } else if (isRecording) {
+                    // Simulate silence
+                    const recordingStatus = exercise.querySelector('.recording-status');
+                    const statusText = exercise.querySelector('.recording-status span');
+                    
+                    recordingStatus.classList.remove('voice-detected');
+                    recordingStatus.classList.add('silence-detected');
+                    statusText.textContent = "Listening...";
+                }
+                
+                // Rotate active bar for visual effect
+                voiceBars[activeBarIndex].classList.add('active');
+                activeBarIndex = (activeBarIndex + 1) % voiceBars.length;
+                
+            }, 200);
+        }
+        
+        // Detect silence and auto-stop recording
+        function startSilenceDetection(button, timerId, exercise) {
+            let silenceStartTime = null;
+            const SILENCE_THRESHOLD = 5000; // 5 seconds
+            
+            silenceTimer = setInterval(() => {
+                if (!isRecording) return;
+                
+                if (!voiceDetected) {
+                    if (!silenceStartTime) {
+                        silenceStartTime = Date.now();
+                    } else if (Date.now() - silenceStartTime >= SILENCE_THRESHOLD) {
+                        // Auto-stop due to silence
+                        const recordingStatus = exercise.querySelector('.recording-status');
+                        const statusText = exercise.querySelector('.recording-status span');
+                        
+                        recordingStatus.classList.remove('voice-detected', 'silence-detected');
+                        recordingStatus.classList.add('ending');
+                        statusText.textContent = "Stopping recording due to silence...";
+                        
+                        setTimeout(() => {
+                            stopRecording(button, timerId);
+                        }, 1000);
+                    }
+                } else {
+                    // Reset silence timer when voice is detected
+                    silenceStartTime = null;
+                    voiceDetected = false; // Reset for next check
+                }
+            }, 1000);
+        }
+        
+        function stopRecording(button, timerId) {
+            clearTimeout(recordingTimeout);
+            clearInterval(timerInterval);
+            clearInterval(silenceTimer);
+            clearInterval(voiceActivityInterval);
+            
+            // Get elements for this specific exercise
+            const exercise = button.closest('.lesson-exercise');
+            const recordingIndicator = exercise.querySelector('.recording-indicator');
+            const recordingStatus = exercise.querySelector('.recording-status');
+            const voiceActivity = exercise.querySelector('.voice-activity-indicator');
+            const loadingIndicator = exercise.querySelector('.loading-indicator');
+            const voiceFeedback = exercise.querySelector('.voice-feedback');
+            const timer = document.getElementById(timerId);
+            
+            // Calculate recording duration
+            totalRecordingTime = Date.now() - recordingStartTime;
+            
+            // Reset recording state
+            isRecording = false;
+            
+            // Reset recording button
+            button.classList.remove('recording');
+            button.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+            button.disabled = false;
+            
+            // Hide recording indicators
+            recordingIndicator.classList.remove('active');
+            recordingStatus.classList.remove('active', 'voice-detected', 'silence-detected', 'ending');
+            voiceActivity.style.display = 'none';
+            
+            // Reset voice bars
+            const voiceBars = exercise.querySelectorAll('.voice-bar');
+            voiceBars.forEach(bar => bar.classList.remove('active'));
+            
+            // Show loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.classList.add('active');
+                
+                // Simulate processing time
+                setTimeout(() => {
+                    loadingIndicator.classList.remove('active');
+                    
+                    // Check if recording was too short
+                    if (totalRecordingTime < 10000) { // Less than 10 seconds
+                        showRetryPrompt(exercise);
+                    } else {
+                        // Show feedback with random scores for demo
+                        if (voiceFeedback) {
+                            showFeedback(voiceFeedback, button.id);
+                            
+                            // Add XP for completing a practice session
+                            if (button.id !== 'vocab-record-btn') {
+                                addXP(25);
+                                updateDashboard();
+                                
+                                // Record practice session
+                                recordPracticeSession(button.id);
+                            }
+                        }
+                    }
+                }, 2000);
+            }
+            
+            // Reset timer
+            if (timerId === 'home-timer') {
+                timer.textContent = '02:00';
+            } else if (timerId === 'tech-timer') {
+                timer.textContent = '03:00';
+            } else if (timerId === 'hr-timer') {
+                timer.textContent = '02:30';
+            }
+        }
+        
+        // Show retry prompt with AI voice
+        function showRetryPrompt(exercise) {
+            const retryPrompt = exercise.querySelector('.retry-prompt');
+            retryPrompt.classList.add('active');
+            
+            // Speak retry instruction
+            speakText("Please try again. Your answer was too short or contained long pauses. Try to speak continuously for at least 30 seconds, focusing on providing a complete answer to the question.", "home-speaking-indicator");
+        }
+        
+        function updateTimerDisplay(timer, seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            
+            if (seconds <= 30) {
+                timer.classList.add('timer-warning');
+            } else {
+                timer.classList.remove('timer-warning');
+            }
+        }
+        
+        function showFeedback(voiceFeedback, buttonId) {
+            // Generate random feedback for demo purposes
+            const scoreOptions = ['Excellent', 'Good', 'Needs practice'];
+            const accuracyOptions = ['90%', '75%', '60%'];
+            
+            const score1 = scoreOptions[Math.floor(Math.random() * scoreOptions.length)];
+            const score2 = scoreOptions[Math.floor(Math.random() * scoreOptions.length)];
+            const score3 = scoreOptions[Math.floor(Math.random() * scoreOptions.length)];
+            const score4 = scoreOptions[Math.floor(Math.random() * scoreOptions.length)];
+            const accuracy = accuracyOptions[Math.floor(Math.random() * accuracyOptions.length)];
+            const overallScore = (Math.random() * 3 + 7).toFixed(1);
+            
+            // Update feedback content based on which button was clicked
+            if (buttonId === 'home-start-record-btn') {
+                document.getElementById('home-pronunciation-score').textContent = score1;
+                document.getElementById('home-fluency-score').textContent = score2;
+                document.getElementById('home-content-score').textContent = score3;
+                document.getElementById('home-confidence-score').textContent = score4;
+                document.getElementById('home-overall-score').textContent = `${overallScore}/10`;
+                document.getElementById('home-suggestions').textContent = 
+                    score1 === 'Excellent' && score2 === 'Excellent' 
+                    ? "Excellent response! Your answer was clear, confident, and well-structured for a fresher."
+                    : "Good effort! Try to speak more slowly and clearly. Consider adding more specific examples from your academic projects.";
+                voiceFeedback.classList.add('active');
+            } else if (buttonId === 'tech-start-record-btn') {
+                document.getElementById('tech-accuracy').textContent = score1;
+                document.getElementById('project-explanation').textContent = score2;
+                document.getElementById('learning-reflection').textContent = score3;
+                document.getElementById('tech-overall-score').textContent = `${overallScore}/10`;
+                document.getElementById('tech-suggestions').textContent = 
+                    "Great job explaining your technical project. Consider using even more specific details about the technologies you used and challenges you overcame.";
+                voiceFeedback.classList.add('active');
+            } else if (buttonId === 'hr-start-record-btn') {
+                document.getElementById('career-vision').textContent = score1;
+                document.getElementById('role-alignment').textContent = score2;
+                document.getElementById('realistic-planning').textContent = score3;
+                document.getElementById('hr-overall-score').textContent = `${overallScore}/10`;
+                document.getElementById('hr-suggestions').textContent = 
+                    "Your answer shows good career planning. Try to be more specific about how you'll develop skills in this role and contribute to the company.";
+                voiceFeedback.classList.add('active');
+            } else if (buttonId === 'vocab-record-btn') {
+                document.getElementById('pronunciation-accuracy').textContent = accuracy;
+                document.getElementById('pronunciation-suggestions').textContent = 
+                    accuracy === '90%' 
+                    ? "Excellent pronunciation! Your articulation was clear and accurate."
+                    : "Good effort! Pay attention to the vowel sounds and try to speak more slowly.";
+                voiceFeedback.classList.add('active');
+            }
+        }
+        
+        // Record a practice session
+        function recordPracticeSession(buttonId) {
+            const sessionType = getSessionType(buttonId);
+            const score = (Math.random() * 30 + 70).toFixed(0); // Random score between 70-100
+            
+            const session = {
+                id: Date.now(),
+                type: sessionType,
+                score: score,
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+            
+            practiceSessions.unshift(session); // Add to beginning of array
+            
+            // Update performance scores
+            updatePerformanceScores(sessionType, parseInt(score));
+            
+            // Update practice sessions list
+            updatePracticeSessionsList();
+        }
+        
+        // Get session type from button ID
+        function getSessionType(buttonId) {
+            if (buttonId === 'home-start-record-btn') return 'Self Introduction';
+            if (buttonId === 'tech-start-record-btn') return 'Technical Questions';
+            if (buttonId === 'hr-start-record-btn') return 'HR Questions';
+            return 'Vocabulary Practice';
+        }
+        
+        // Update performance scores based on session
+        function updatePerformanceScores(type, score) {
+            // Update relevant performance categories based on session type
+            if (type === 'Technical Questions') {
+                performanceScores.technical = Math.max(performanceScores.technical, score);
+                performanceScores.content = Math.max(performanceScores.content, score - 10);
+            } else if (type === 'HR Questions') {
+                performanceScores.communication = Math.max(performanceScores.communication, score);
+                performanceScores.confidence = Math.max(performanceScores.confidence, score - 5);
+            } else if (type === 'Self Introduction') {
+                performanceScores.communication = Math.max(performanceScores.communication, score);
+                performanceScores.confidence = Math.max(performanceScores.confidence, score);
+            }
+            
+            // Update detailed criteria
+            performanceScores.structure = Math.min(100, performanceScores.structure + 5);
+            performanceScores.vocabulary = Math.min(100, performanceScores.vocabulary + 3);
+            performanceScores.pronunciation = Math.min(100, performanceScores.pronunciation + 4);
+            performanceScores.fluency = Math.min(100, performanceScores.fluency + 4);
+        }
+        
+        // Update practice sessions list
+        function updatePracticeSessionsList() {
+            const sessionsList = document.getElementById('practice-sessions-list');
+            
+            if (practiceSessions.length === 0) {
+                sessionsList.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 20px;">No practice sessions completed yet. Start practicing to see your results here.</p>';
+                return;
+            }
+            
+            let html = '';
+            practiceSessions.forEach(session => {
+                html += `
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-microphone"></i></div>
+                        <div class="tip-content">
+                            <h4>${session.type} <span style="color: var(--primary); font-weight: bold;">${session.score}%</span></h4>
+                            <p>Completed on ${session.date} at ${session.time}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            sessionsList.innerHTML = html;
+        }
+        
+        // Update scoreboard with current performance data
+        function updateScoreboard() {
+            // Update main score categories
+            document.getElementById('technical-score').textContent = `${performanceScores.technical}%`;
+            document.getElementById('technical-fill').style.width = `${performanceScores.technical}%`;
+            
+            document.getElementById('communication-score').textContent = `${performanceScores.communication}%`;
+            document.getElementById('communication-fill').style.width = `${performanceScores.communication}%`;
+            
+            document.getElementById('content-score').textContent = `${performanceScores.content}%`;
+            document.getElementById('content-fill').style.width = `${performanceScores.content}%`;
+            
+            document.getElementById('confidence-score').textContent = `${performanceScores.confidence}%`;
+            document.getElementById('confidence-fill').style.width = `${performanceScores.confidence}%`;
+            
+            // Update detailed criteria
+            document.getElementById('structure-score').textContent = `${performanceScores.structure}%`;
+            document.getElementById('structure-feedback').textContent = getFeedbackForScore(performanceScores.structure, 'structure');
+            
+            document.getElementById('vocabulary-score').textContent = `${performanceScores.vocabulary}%`;
+            document.getElementById('vocabulary-feedback').textContent = getFeedbackForScore(performanceScores.vocabulary, 'vocabulary');
+            
+            document.getElementById('pronunciation-score').textContent = `${performanceScores.pronunciation}%`;
+            document.getElementById('pronunciation-feedback').textContent = getFeedbackForScore(performanceScores.pronunciation, 'pronunciation');
+            
+            document.getElementById('fluency-score').textContent = `${performanceScores.fluency}%`;
+            document.getElementById('fluency-feedback').textContent = getFeedbackForScore(performanceScores.fluency, 'fluency');
+        }
+        
+        // Get feedback message based on score and criteria
+        function getFeedbackForScore(score, criteria) {
+            if (score === 0) return "No data yet. Complete practice sessions to see your analysis.";
+            
+            if (score >= 90) {
+                switch(criteria) {
+                    case 'structure': return "Excellent answer structure! Your responses are well-organized and easy to follow.";
+                    case 'vocabulary': return "Impressive vocabulary usage! You're using professional terms appropriately.";
+                    case 'pronunciation': return "Outstanding pronunciation! Your speech is clear and easy to understand.";
+                    case 'fluency': return "Excellent fluency! You speak smoothly with minimal hesitation.";
+                    default: return "Excellent performance!";
+                }
+            } else if (score >= 80) {
+                switch(criteria) {
+                    case 'structure': return "Good answer structure. Consider using the STAR method more consistently.";
+                    case 'vocabulary': return "Good vocabulary usage. Try incorporating more industry-specific terms.";
+                    case 'pronunciation': return "Good pronunciation. Work on difficult words and speaking pace.";
+                    case 'fluency': return "Good fluency. Reduce filler words like 'um' and 'ah'.";
+                    default: return "Good performance!";
+                }
+            } else if (score >= 70) {
+                switch(criteria) {
+                    case 'structure': return "Adequate answer structure. Focus on creating clear beginnings and endings to your responses.";
+                    case 'vocabulary': return "Adequate vocabulary. Expand your professional vocabulary with more practice.";
+                    case 'pronunciation': return "Adequate pronunciation. Practice difficult sounds and word stress patterns.";
+                    case 'fluency': return "Adequate fluency. Practice speaking more smoothly without long pauses.";
+                    default: return "Adequate performance. Keep practicing!";
+                }
+            } else {
+                switch(criteria) {
+                    case 'structure': return "Needs improvement in structure. Practice organizing your thoughts before speaking.";
+                    case 'vocabulary': return "Needs improvement in vocabulary. Study common interview terms and phrases.";
+                    case 'pronunciation': return "Needs improvement in pronunciation. Focus on clear articulation of words.";
+                    case 'fluency': return "Needs improvement in fluency. Practice speaking exercises regularly.";
+                    default: return "Needs improvement. Regular practice will help!";
+                }
+            }
+        }
+        
+        // Update dashboard based on user progress
+        function updateDashboard() {
+            // Update progress based on XP
+            const progressPercent = Math.min(100, (userXP / 500) * 100);
+            document.querySelector('.goal-progress-bar').style.width = `${progressPercent}%`;
+            document.querySelector('.daily-goal span:last-child').textContent = `${Math.floor(userXP/25)}/5`;
+            
+            // Update stats
+            document.querySelectorAll('.stat-value')[0].textContent = currentStreak;
+            document.querySelectorAll('.stat-value')[1].textContent = `${Math.floor(progressPercent)}%`;
+            document.querySelectorAll('.stat-value')[2].textContent = Math.floor(userXP/100);
+            document.querySelectorAll('.stat-value')[3].textContent = Math.floor(userXP/200);
+            
+            // Unlock modules based on XP
+            if (userXP >= 25) {
+                document.querySelectorAll('.module-card')[0].classList.remove('locked');
+                document.querySelectorAll('.module-card')[0].classList.add('completed');
+                document.querySelectorAll('.module-card')[0].querySelector('p').textContent = 'Completed';
+                
+                document.querySelectorAll('.path-step')[0].classList.add('completed');
+            }
+            
+            if (userXP >= 50) {
+                document.querySelectorAll('.module-card')[1].classList.remove('locked');
+                document.querySelectorAll('.module-card')[1].classList.add('completed');
+                document.querySelectorAll('.module-card')[1].querySelector('p').textContent = 'Completed';
+                
+                document.querySelectorAll('.path-step')[1].classList.add('completed');
+            }
+            
+            if (userXP >= 100) {
+                document.querySelectorAll('.module-card')[2].classList.remove('locked');
+                document.querySelectorAll('.module-card')[2].classList.add('current');
+                document.querySelectorAll('.module-card')[2].querySelector('p').textContent = 'Continue';
+                
+                document.querySelectorAll('.path-step')[2].classList.add('active');
+            }
+        }
+        
+        // Level selection functionality
+        document.querySelectorAll('.level-card').forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.classList.contains('locked')) return;
+                
+                // Remove active class from all level cards
+                document.querySelectorAll('.level-card').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+                
+                const level = this.getAttribute('data-level');
+                
+                // Update questions based on level for technical page
+                if (document.getElementById('technical-page').classList.contains('active')) {
+                    updateTechQuestions(level);
+                }
+                
+                // Update questions based on level for HR page
+                if (document.getElementById('non-technical-page').classList.contains('active')) {
+                    updateHRQuestions(level);
+                }
+            });
+        });
+        
+        // Update technical questions based on level
+        function updateTechQuestions(level) {
+            const questions = techQuestions[level] || techQuestions[1];
+            document.getElementById('tech-question').textContent = questions[0];
+            
+            // Reset question counter
+            document.querySelector('.question-counter').textContent = 'Question 1 of ' + questions.length;
+            
+            // Set up question navigation
+            setupQuestionNavigation('tech', questions);
+        }
+        
+        // Update HR questions based on level
+        function updateHRQuestions(level) {
+            const questions = hrQuestions[level] || hrQuestions[1];
+            document.getElementById('hr-question').textContent = questions[0];
+            
+            // Reset question counter
+            document.querySelector('.question-counter').textContent = 'Question 1 of ' + questions.length;
+            
+            // Set up question navigation
+            setupQuestionNavigation('hr', questions);
+        }
+        
+        // Set up question navigation
+        function setupQuestionNavigation(type, questions) {
+            let currentQuestion = 0;
+            
+            const nextBtn = type === 'tech' ? 
+                document.getElementById('next-question-btn') : 
+                document.getElementById('hr-next-question-btn');
+                
+            const prevBtn = type === 'tech' ? 
+                document.getElementById('prev-question-btn') : 
+                document.getElementById('hr-prev-question-btn');
+            
+            const questionElement = type === 'tech' ? 
+                document.getElementById('tech-question') : 
+                document.getElementById('hr-question');
+            
+            const counterElement = document.querySelector('.question-counter');
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    questionElement.textContent = questions[currentQuestion];
+                    counterElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+                    prevBtn.disabled = false;
+                    
+                    if (currentQuestion === questions.length - 1) {
+                        nextBtn.disabled = true;
+                    }
+                }
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    questionElement.textContent = questions[currentQuestion];
+                    counterElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+                    nextBtn.disabled = false;
+                    
+                    if (currentQuestion === 0) {
+                        prevBtn.disabled = true;
+                    }
+                }
+            });
+        }
+        
+        // Set up recording buttons with appropriate timers
+        document.getElementById('home-start-record-btn').addEventListener('click', function() {
+            if (!isRecording) {
+                startRecording(this, 120, 'home-timer');
+            } else {
+                stopRecording(this, 'home-timer');
+            }
+        });
+        
+        document.getElementById('tech-start-record-btn').addEventListener('click', function() {
+            if (!isRecording) {
+                startRecording(this, 180, 'tech-timer');
+            } else {
+                stopRecording(this, 'tech-timer');
+            }
+        });
+        
+        document.getElementById('hr-start-record-btn').addEventListener('click', function() {
+            if (!isRecording) {
+                startRecording(this, 150, 'hr-timer');
+            } else {
+                stopRecording(this, 'hr-timer');
+            }
+        });
+        
+        document.getElementById('vocab-record-btn').addEventListener('click', function() {
+            if (selectedVocabTerm === "") {
+                alert("Please select a vocabulary term first");
+                return;
+            }
+            startRecording(this, 60, 'home-timer'); // Reusing home timer for vocabulary
+        });
+        
+        // Vocabulary term selection
+        document.querySelectorAll('.vocab-item').forEach(item => {
+            item.addEventListener('click', function() {
+                selectedVocabTerm = this.getAttribute('data-term');
+                document.getElementById('selected-term').textContent = selectedVocabTerm;
+                document.getElementById('vocab-voice-feedback').classList.remove('active');
+            });
+        });
+        
+        // Start interview buttons
+        document.querySelector('.start-interview-btn').addEventListener('click', function() {
+            if (userName === "") {
+                alert("Please enter your name first");
+                document.getElementById('name-modal-overlay').classList.add('active');
+                return;
+            }
+            document.querySelector('.nav-btn[data-page="non-technical"]').click();
+        });
+        
+        document.querySelector('.take-assessment-btn').addEventListener('click', function() {
+            if (userName === "") {
+                alert("Please enter your name first");
+                document.getElementById('name-modal-overlay').classList.add('active');
+                return;
+            }
+            document.querySelector('.nav-btn[data-page="scoreboard"]').click();
+        });
+        
+        document.querySelector('.start-mock-interview-btn').addEventListener('click', function() {
+            if (userName === "") {
+                alert("Please enter your name first");
+                document.getElementById('name-modal-overlay').classList.add('active');
+                return;
+            }
+            alert("Starting mock interview for freshers... This would simulate a full interview experience with multiple questions.");
+            addXP(75);
+            updateDashboard();
+            
+            // Record a mock interview session
+            const mockSession = {
+                id: Date.now(),
+                type: 'Mock Interview',
+                score: (Math.random() * 20 + 75).toFixed(0), // Random score between 75-95
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+            
+            practiceSessions.unshift(mockSession);
+            updatePracticeSessionsList();
+            
+            // Update performance scores for mock interview
+            performanceScores.technical = Math.max(performanceScores.technical, mockSession.score - 5);
+            performanceScores.communication = Math.max(performanceScores.communication, mockSession.score);
+            performanceScores.content = Math.max(performanceScores.content, mockSession.score - 10);
+            performanceScores.confidence = Math.max(performanceScores.confidence, mockSession.score - 5);
+        });
+        
+        // Dark mode toggle
+        document.getElementById('dark-mode-toggle').addEventListener('click', function() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            const icon = this.querySelector('i');
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+        
+        // Initialize dashboard and questions
+        updateDashboard();
+        updateTechQuestions(1);
+        updateHRQuestions(1);
+        updateProgressRing();
+        updatePracticeSessionsList();
+        
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
-
